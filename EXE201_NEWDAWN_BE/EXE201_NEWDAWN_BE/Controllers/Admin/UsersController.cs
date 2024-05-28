@@ -19,8 +19,15 @@ namespace EXE201_NEWDAWN_BE.Controllers.Admin
         [HttpGet("admin/users")]
         public async Task<ActionResult<IEnumerable<UserInformationView>>> GetAllUserMemmber()
         {
-            var users = await _userInformationService.GetListMemberUser();
-            return Ok(users);
+            try
+            {
+                var users = await _userInformationService.GetListMemberUser();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponseStatus(500, ex.Message));
+            }
         }
 
         [Authorize(policy: "Admin")]
