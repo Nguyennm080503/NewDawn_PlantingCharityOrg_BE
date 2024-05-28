@@ -17,7 +17,6 @@ namespace EXE201_NEWDAWN_BE.Extensions
             services.AddScoped<IUserInformationRepository, UserInformationRepository>();
             services.AddScoped<IPostingNewsRepository, PostingNewsRepository>();
             services.AddScoped<IPlantTrackingRepository, PlantTrackingRepository>();
-            services.AddScoped<IPlantRepository, PlantRepository>();
             services.AddScoped<IPlantCodeRepository, PlantCodeRepository>();
             services.AddScoped<IPaymentTransactionRepository, PaymentTransactionRepository>();
             services.AddScoped<IPaymentTransactionDetailRepository, PaymentTransactionDetailRepository>();
@@ -26,7 +25,6 @@ namespace EXE201_NEWDAWN_BE.Extensions
             services.AddScoped<IUserInformationService, UserInformationService>();
             services.AddScoped<IPostingNewsService, PostingNewsService>();
             services.AddScoped<IPlantTrackingService, PlantTrackingService>();
-            services.AddScoped<IPlantService, PlantService>();
             services.AddScoped<IPlantCodeService, PlantCodeService>();
             services.AddScoped<IPaymentTransactionService, PaymentTransactionService>();
             services.AddScoped<IPaymentTransactionDetailService, PaymentTransactionDetailService>();

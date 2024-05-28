@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAO.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240527161640_init")]
+    [Migration("20240528015711_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -226,9 +226,6 @@ namespace DAO.Migrations
                     b.Property<int>("PaymentID")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlantID")
-                        .HasColumnType("int");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -239,40 +236,7 @@ namespace DAO.Migrations
 
                     b.HasIndex("PaymentID");
 
-                    b.HasIndex("PlantID");
-
                     b.ToTable("PaymentTransactionDetail");
-                });
-
-            modelBuilder.Entity("BussinessObjects.Models.Plant", b =>
-                {
-                    b.Property<int>("PlantID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlantID"));
-
-                    b.Property<string>("PlantDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("PlantFee")
-                        .HasColumnType("float");
-
-                    b.Property<string>("PlantName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ThumnailUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PlantID");
-
-                    b.ToTable("Plant");
                 });
 
             modelBuilder.Entity("BussinessObjects.Models.PlantCode", b =>
@@ -283,14 +247,22 @@ namespace DAO.Migrations
                     b.Property<int>("OwnerID")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlantID")
+                    b.Property<int>("PaymentTransactionDetailID")
                         .HasColumnType("int");
+
+                    b.Property<string>("Provice")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProviceAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PlantCodeID");
 
                     b.HasIndex("OwnerID");
 
-                    b.HasIndex("PlantID");
+                    b.HasIndex("PaymentTransactionDetailID");
 
                     b.ToTable("PlantCode");
                 });
@@ -486,15 +458,7 @@ namespace DAO.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BussinessObjects.Models.Plant", "Plant")
-                        .WithMany("PaymentTransactionDetails")
-                        .HasForeignKey("PlantID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("PaymentTransaction");
-
-                    b.Navigation("Plant");
                 });
 
             modelBuilder.Entity("BussinessObjects.Models.PlantCode", b =>
@@ -505,13 +469,13 @@ namespace DAO.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BussinessObjects.Models.Plant", "Plant")
+                    b.HasOne("BussinessObjects.Models.PaymentTransactionDetail", "PaymentTransactionDetail")
                         .WithMany("PlantCodes")
-                        .HasForeignKey("PlantID")
+                        .HasForeignKey("PaymentTransactionDetailID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Plant");
+                    b.Navigation("PaymentTransactionDetail");
 
                     b.Navigation("UserInformation");
                 });
@@ -557,10 +521,8 @@ namespace DAO.Migrations
                     b.Navigation("PaymentTransactionDetails");
                 });
 
-            modelBuilder.Entity("BussinessObjects.Models.Plant", b =>
+            modelBuilder.Entity("BussinessObjects.Models.PaymentTransactionDetail", b =>
                 {
-                    b.Navigation("PaymentTransactionDetails");
-
                     b.Navigation("PlantCodes");
                 });
 

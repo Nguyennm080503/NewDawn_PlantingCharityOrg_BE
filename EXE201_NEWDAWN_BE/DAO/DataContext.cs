@@ -1,7 +1,6 @@
 ﻿using BussinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Diagnostics.Contracts;
 
 namespace DAO
 {
@@ -23,7 +22,6 @@ namespace DAO
         public DbSet<Package> Package { get; set; }
         public DbSet<PaymentTransaction> PaymentTransaction { get; set; }
         public DbSet<PaymentTransactionDetail> PaymentTransactionDetail { get; set; }
-        public DbSet<Plant> Plant { get; set; }
         public DbSet<PlantCode> PlantCode { get; set; }
         public DbSet<PlantTracking> PlantTracking { get; set; }
         public DbSet<PostingNews> PostingNew { get; set; }
@@ -107,14 +105,6 @@ namespace DAO
                 .ValueGeneratedOnAdd()
                 .UseIdentityColumn();
 
-            modelBuilder.Entity<Plant>()
-              .HasKey(p => p.PlantID);
-
-            modelBuilder.Entity<Plant>()
-                .Property(m => m.PlantID)
-                .ValueGeneratedOnAdd()
-                .UseIdentityColumn();
-
             modelBuilder.Entity<PlantCode>()
               .HasKey(p => p.PlantCodeID);
 
@@ -182,18 +172,11 @@ namespace DAO
                .HasForeignKey(p => p.PaymentID)
                .OnDelete(DeleteBehavior.Restrict);
 
-            // one plant have many plantcode
+            // one detail have many plantcode
             modelBuilder.Entity<PlantCode>()
-               .HasOne(p => p.Plant)
+               .HasOne(p => p.PaymentTransactionDetail)
                .WithMany(p => p.PlantCodes)
-               .HasForeignKey(p => p.PlantID)
-               .OnDelete(DeleteBehavior.Restrict);
-
-            // one plant have many paymentTransactionDetail
-            modelBuilder.Entity<PaymentTransactionDetail>()
-               .HasOne(p => p.Plant)
-               .WithMany(p => p.PaymentTransactionDetails)
-               .HasForeignKey(p => p.PlantID)
+               .HasForeignKey(p => p.PaymentTransactionDetailID)
                .OnDelete(DeleteBehavior.Restrict);
 
             //one plantcode have many planttracking
