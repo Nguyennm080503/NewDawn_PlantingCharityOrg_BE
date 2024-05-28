@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BussinessObjects.Models;
+using DTOS.News;
 
 namespace Repository.Mapper
 {
@@ -6,7 +8,7 @@ namespace Repository.Mapper
     {
         public AutoMapperProfile() 
         {
-
+            CreateMap<PostingNews, NewsMonthView>().ReverseMap();
         }
     }
 }
