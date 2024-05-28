@@ -8,7 +8,6 @@
         public string BankName { get; set;}
         public int AccountID { get; set; }
         public UserInformation UserInformation { get; set; }
-        public Collaborator Collaborator { get; set; }
         public string? PaymentText { get; set; }
         public double TotalAmout { get; set; }
         public DateTime DateCreate { get; set; }

@@ -1,4 +1,5 @@
-﻿using Repository.Interface;
+﻿using DTOS.PaymentDetail;
+using Repository.Interface;
 using Service.Interface;
 
 namespace Service.Implement
@@ -10,6 +11,16 @@ namespace Service.Implement
         public PaymentTransactionDetailService(IPaymentTransactionDetailRepository paymentTransactionDetailRepository)
         {
             _paymentTransactionDetailRepository = paymentTransactionDetailRepository;
+        }
+
+        public async Task<IEnumerable<NewOrdersView>> GetNewOrdersViewAsync()
+        {
+            return await _paymentTransactionDetailRepository.GetNewOrdersViewAsync();
+        }
+
+        public async Task<IEnumerable<TopOrdersView>> GetTopOrdersViewAsync()
+        {
+            return await _paymentTransactionDetailRepository.GetTopOrdersViewAsync();
         }
     }
 }

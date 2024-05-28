@@ -5,6 +5,7 @@ using Service.Interface;
 
 namespace EXE201_NEWDAWN_BE.Controllers.LoginController
 {
+    [ApiController]
     public class LoginController : Controller
     {
         private readonly IUserInformationService _userInformationService;

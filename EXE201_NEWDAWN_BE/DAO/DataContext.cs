@@ -151,13 +151,6 @@ namespace DAO
                 .HasForeignKey(membership => membership.RegisterID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // one collaborator have many payment
-            modelBuilder.Entity<PaymentTransaction>()
-               .HasOne(p => p.Collaborator)
-               .WithMany(a => a.PaymentTransactions)
-               .HasForeignKey(a => a.AccountID)
-               .OnDelete(DeleteBehavior.Restrict);
-
             // one package have many membershipregister
             modelBuilder.Entity<MemberRegisterPackage>()
                .HasOne(m => m.Package)

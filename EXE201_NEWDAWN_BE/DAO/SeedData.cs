@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using BussinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,26 +8,27 @@ public class SeedData
 {
     public static async Task SeedAccount(DataContext context)
     {
-        if (await context.UserInformation.AnyAsync())
+        if (await context.PaymentTransaction.AnyAsync() && await context.PaymentTransactionDetail.AnyAsync())
         {
             return;
         }
 
-        var accountData = await File.ReadAllTextAsync("AccountSeedData.json");
+        var transactionData = await File.ReadAllTextAsync("transaction.json");
+        var detailDate = await File.ReadAllTextAsync("detail.json");
 
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-        var accounts = JsonSerializer.Deserialize<List<UserInformation>>(accountData);
+        var payments = JsonSerializer.Deserialize<List<PaymentTransaction>>(transactionData);
+        var details = JsonSerializer.Deserialize<List<PaymentTransactionDetail>>(detailDate);
 
-        foreach (var account in accounts)
+        foreach (var payment in payments)
         {
-            using var hmac = new HMACSHA512();
+            context.PaymentTransaction.Add(payment);
+        }
 
-            account.Username = account.Username.ToLower();
-            account.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("password123"));
-            account.PasswordSalt = hmac.Key;
-
-            context.UserInformation.Add(account);
+        foreach (var detail in details)
+        {
+            context.PaymentTransactionDetail.Add(detail);
         }
 
         await context.SaveChangesAsync();

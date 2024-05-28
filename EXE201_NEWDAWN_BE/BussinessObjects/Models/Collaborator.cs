@@ -13,6 +13,5 @@
 
         public IEnumerable<BannerMember> BannerMembers { get; set; }
         public IEnumerable<MemberRegisterPackage> UserMemberRegistrations { get; set; }
-        public IEnumerable<PaymentTransaction> PaymentTransactions { get; set; }
     }
 }
