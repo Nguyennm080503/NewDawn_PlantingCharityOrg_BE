@@ -25,6 +25,11 @@ namespace DAO
             }
         }
 
+        public async Task<UserInformation> GetAccountById(int id)
+        {
+            return await dataContext.UserInformation.FirstOrDefaultAsync(x => x.AccountID == id);
+        }
+
         public async Task<UserInformation> GetAccountLoginByUsername(string username)
         {
             return await dataContext.UserInformation.FirstOrDefaultAsync(x => x.Username == username);

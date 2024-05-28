@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BussinessObjects.Models;
+using DTOS.Account;
 using DTOS.Login;
 using Repository.Interface;
 using Service.Interface;
@@ -42,6 +43,19 @@ namespace Service.Implement
                 userDto.Token = _tokenService.CreateToken(user);
                 return userDto;
             }
+        }
+
+        public async Task<IEnumerable<UserInformationView>> GetListMemberUser()
+        {
+            var users = await _userInformationRepository.GetListMemberUser();
+            return users;
+        }
+
+        public async Task UpdateStatusMemberAccount(StatusParams statusParams)
+        {
+            var user = _userInformationRepository.GetAccountById(statusParams.AccountID);
+            user.Result.Status = statusParams.Status;
+            await _userInformationRepository.UpdateStatusMemberAccount(user.Result);
         }
     }
 }
