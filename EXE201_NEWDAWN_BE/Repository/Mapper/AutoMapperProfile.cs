@@ -9,6 +9,7 @@ namespace Repository.Mapper
         public AutoMapperProfile() 
         {
             CreateMap<PostingNews, NewsMonthView>().ReverseMap();
+            CreateMap<PostingNews, CreateNewsModel>().ReverseMap();
         }
     }
 }
