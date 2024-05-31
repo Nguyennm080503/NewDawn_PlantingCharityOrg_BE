@@ -27,6 +27,7 @@ namespace Repository.Mapper
            .ForMember(dest => dest.ProviceAddress, opt => opt.MapFrom(src => src.PlantCode.ProviceAddress))
            .ForMember(dest => dest.Provice, opt => opt.MapFrom(src => src.PlantCode.ProviceAddress))
            .ForMember(dest => dest.TotalStatus, opt => opt.MapFrom(src => src.PlantCode.Status));
+            CreateMap<PostingNews, CreateNewsModel>().ReverseMap();
         }
     }
 }

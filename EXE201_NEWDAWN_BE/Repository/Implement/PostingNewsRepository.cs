@@ -13,6 +13,12 @@ namespace Repository.Implement
         {
             this.mapper = mapper;
         }
+        public async Task<bool> CreateNews(PostingNews postingNews)
+        {
+            var result = await PostingNewsDAO.Instance.CreateAsync(postingNews);
+            return result;
+        }
+
         public async Task<IEnumerable<NewsMonthView>> GetAllNewsEachMonth()
         {
             var news = PostingNewsDAO.Instance.GetAllAsync().Result
