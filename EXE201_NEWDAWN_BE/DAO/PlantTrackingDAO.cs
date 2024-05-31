@@ -1,4 +1,5 @@
 ﻿using BussinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAO
 {
@@ -22,6 +23,11 @@ namespace DAO
                 }
                 return instance;
             }
+        }
+
+        public async Task<IEnumerable<PlantTracking>> GetAllTrackingOfPlantCode(string plantcode)
+        {
+            return await dataContext.PlantTracking.Include(x => x.PlantCode).Where(x => x.PlantCodeID == plantcode).ToListAsync();
         }
     }
 }

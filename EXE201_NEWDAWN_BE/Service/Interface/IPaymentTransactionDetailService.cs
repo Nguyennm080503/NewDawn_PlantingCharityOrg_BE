@@ -6,5 +6,6 @@ namespace Service.Interface
     {
         Task<IEnumerable<TopOrdersView>> GetTopOrdersViewAsync();
         Task<IEnumerable<NewOrdersView>> GetNewOrdersViewAsync();
+        Task<int> CreatePaymentTransactionDetail(PaymentDetailCreate paymentTransactionDetail);
     }
 }

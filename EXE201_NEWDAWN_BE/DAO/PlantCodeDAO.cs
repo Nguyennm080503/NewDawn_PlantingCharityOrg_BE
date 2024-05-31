@@ -1,14 +1,15 @@
 ﻿using BussinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAO
 {
     public class PlantCodeDAO : BaseDAO<PlantCode>
     {
-        private static PlantCodeDAO instance = null;
-        private readonly DataContext dataContext;
+        private static PlantCodeDAO _instance;
+        private static DataContext dataContext;
+        private static readonly object _lock = new object();
 
-        private PlantCodeDAO()
-        {
+        private PlantCodeDAO() {
             dataContext = new DataContext();
         }
 
@@ -16,11 +17,36 @@ namespace DAO
         {
             get
             {
-                if (instance == null)
+                lock (_lock)
                 {
-                    instance = new PlantCodeDAO();
+                    if (_instance == null)
+                    {
+                        _instance = new PlantCodeDAO();
+                    }
                 }
-                return instance;
+                return _instance;
+            }
+        }
+
+        public async Task<IEnumerable<PlantCode>> GetAllPlantCodeOfUser(int accountID) 
+        {
+            return await dataContext.PlantCode.Where(x => x.OwnerID == accountID).OrderByDescending(x => x.DateCreate).ToListAsync();
+        }
+
+        public async Task<IEnumerable<PlantCode>> GetAllPlantCodes()
+        {
+            return await dataContext.PlantCode.Include(x => x.UserInformation).OrderByDescending(x => x.DateCreate).ToListAsync();
+        }
+
+        public async Task<string> GetLatestPlantCode()
+        {
+            using (var dataContext = new DataContext())
+            {
+                var latestPlantCode = await dataContext.PlantCode
+                    .OrderByDescending(x => x.PlantCodeID)
+                    .FirstOrDefaultAsync();
+
+                return latestPlantCode?.PlantCodeID ?? string.Empty;
             }
         }
     }

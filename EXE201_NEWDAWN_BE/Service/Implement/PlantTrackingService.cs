@@ -1,4 +1,5 @@
-﻿using Repository.Interface;
+﻿using DTOS.PlantTracking;
+using Repository.Interface;
 using Service.Interface;
 
 namespace Service.Implement
@@ -9,6 +10,16 @@ namespace Service.Implement
         public PlantTrackingService(IPlantTrackingRepository plantTrackingRepository) 
         {
             _plantTrackingRepository = plantTrackingRepository;
+        }
+
+        public async Task<IEnumerable<PlantTrackingView>> GetAllTrackingDetailOfPlantCode(string plantcode)
+        {
+            return await _plantTrackingRepository.GetAllTrackingDetailOfPlantCode(plantcode);
+        }
+
+        public async Task CreateFirstTrackingPlantCode(string plantcode)
+        {
+            await _plantTrackingRepository.CreateFirstTrackingPlantCode(plantcode);
         }
     }
 }

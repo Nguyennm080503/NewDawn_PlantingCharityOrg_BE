@@ -13,6 +13,11 @@ namespace Service.Implement
             _paymentTransactionDetailRepository = paymentTransactionDetailRepository;
         }
 
+        public async Task<int> CreatePaymentTransactionDetail(PaymentDetailCreate paymentTransactionDetail)
+        {
+            return await _paymentTransactionDetailRepository.CreatePaymentTransactionDetail(paymentTransactionDetail);
+        }
+
         public async Task<IEnumerable<NewOrdersView>> GetNewOrdersViewAsync()
         {
             return await _paymentTransactionDetailRepository.GetNewOrdersViewAsync();

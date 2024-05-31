@@ -1,4 +1,5 @@
-﻿using Repository.Interface;
+﻿using DTOS.Payment;
+using Repository.Interface;
 using Service.Interface;
 
 namespace Service.Implement
@@ -9,6 +10,11 @@ namespace Service.Implement
         public PaymentTransactionService(IPaymentTransactionRepository paymentTransactionRepository) 
         {
             _paymentTransactionRepository = paymentTransactionRepository;
+        }
+
+        public async Task<int> CreatePaymentTransaction(PaymentCreate paymentTransaction)
+        {
+            return await _paymentTransactionRepository.CreatePaymentTransaction(paymentTransaction);
         }
     }
 }

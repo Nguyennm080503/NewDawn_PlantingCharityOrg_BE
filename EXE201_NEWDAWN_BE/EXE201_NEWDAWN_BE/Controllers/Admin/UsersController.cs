@@ -31,7 +31,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.Admin
         }
 
         [Authorize(policy: "Admin")]
-        [HttpPost("admin/users/update_status")]
+        [HttpPut("admin/users/update_status")]
         public async Task<ActionResult> UpdateStatusMemberAccount(StatusParams statusParams)
         {
             try

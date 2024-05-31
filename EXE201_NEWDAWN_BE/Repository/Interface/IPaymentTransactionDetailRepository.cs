@@ -1,4 +1,5 @@
-﻿using DTOS.PaymentDetail;
+﻿using BussinessObjects.Models;
+using DTOS.PaymentDetail;
 
 namespace Repository.Interface
 {
@@ -6,5 +7,6 @@ namespace Repository.Interface
     {
         Task<IEnumerable<TopOrdersView>> GetTopOrdersViewAsync();
         Task<IEnumerable<NewOrdersView>> GetNewOrdersViewAsync();
+        Task<int> CreatePaymentTransactionDetail(PaymentDetailCreate paymentTransactionDetail);
     }
 }

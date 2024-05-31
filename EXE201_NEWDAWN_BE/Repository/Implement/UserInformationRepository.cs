@@ -1,4 +1,5 @@
-﻿using BussinessObjects.Models;
+﻿using AutoMapper;
+using BussinessObjects.Models;
 using DAO;
 using DTOS.Account;
 using Repository.Interface;
@@ -7,6 +8,12 @@ namespace Repository.Implement
 {
     public class UserInformationRepository : IUserInformationRepository
     {
+        private readonly IMapper mapper;
+
+        public UserInformationRepository(IMapper mapper)
+        {
+            this.mapper = mapper;
+        }
         public async Task<UserInformation> GetAccountById(int id)
         {
             return await UserInformationDAO.Instance.GetAccountById(id);
@@ -22,16 +29,8 @@ namespace Repository.Implement
         {
             var users = UserInformationDAO.Instance.GetAllAsync().Result
                 .Where(x => x.RoleID == 2)
-                .Select(y => new UserInformationView
-                {
-                    AccountID = y.AccountID,
-                    Email = y.Email,
-                    FullName = y.FullName,
-                    PhoneNumber = y.PhoneNumber,
-                    Username = y.Username,
-                    Status = y.Status
-                }).ToList();
-            return users;
+                .ToList();
+            return mapper.Map<IEnumerable<UserInformationView>>(users);
         }
 
         public async Task UpdateStatusMemberAccount(UserInformation userInformation)

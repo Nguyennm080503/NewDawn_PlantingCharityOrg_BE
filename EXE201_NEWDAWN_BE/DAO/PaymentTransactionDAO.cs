@@ -4,8 +4,9 @@ namespace DAO
 {
     public class PaymentTransactionDAO : BaseDAO<PaymentTransaction>
     {
-        private static PaymentTransactionDAO instance = null;
+        private static PaymentTransactionDAO _instance = null;
         private readonly DataContext dataContext;
+        private static readonly object _lock = new object();
 
         private PaymentTransactionDAO()
         {
@@ -16,11 +17,14 @@ namespace DAO
         {
             get
             {
-                if (instance == null)
+                lock (_lock)
                 {
-                    instance = new PaymentTransactionDAO();
+                    if (_instance == null)
+                    {
+                        _instance = new PaymentTransactionDAO();
+                    }
                 }
-                return instance;
+                return _instance;
             }
         }
     }
