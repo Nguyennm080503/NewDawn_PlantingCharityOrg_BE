@@ -7,57 +7,34 @@ namespace Service.Helper
 {
     public static class ImageHandler
     {
-        public static async Task<string> UploadImageToFileReturnURL(IWebHostEnvironment webHostEnvironment, IFormFile formFile, EnumTypeFolderImage type, string uniqueID)
+        public static async Task<string> UploadImageToFileReturnURL(IWebHostEnvironment webHostEnvironment, IFormFile formFile, string type, string uniqueID)
         {
-            if (formFile.Length == 0) return null;
-
-            var folderPath = GetFolderPath(webHostEnvironment, type);
-
-            EnsureDirectoryExists(folderPath);
-
-            var (filePath, returnFilePath) = GetUniqueFilePath(folderPath, uniqueID, Path.GetExtension(formFile.FileName));
-
-            try
+            if (formFile.Length > 0)
             {
+                var contentPath = webHostEnvironment.ContentRootPath;
+                var folderPath = Path.Combine(contentPath, "Uploads", type);
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+                var extentionFile = Path.GetExtension(formFile.FileName);
+                var filePath = Path.Combine(folderPath, uniqueID + extentionFile);
+                var returnFilePath = Path.Combine("Uploads", type, uniqueID + extentionFile);
+                var count = 0;
+                while (File.Exists(filePath))
+                {
+                    count = count + 1;
+                    var newFileName = uniqueID + "_" + count;
+                    filePath = Path.Combine(folderPath, newFileName + extentionFile);
+                    returnFilePath = Path.Combine("Uploads", type, newFileName + extentionFile);
+                }
                 using (var stream = System.IO.File.Create(filePath))
                 {
-                    await formFile.CopyToAsync(stream);
+                    formFile.CopyTo(stream);
                 }
                 return returnFilePath;
             }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException("An error occurred while uploading the file.", ex);
-            }
-        }
-
-        private static string GetFolderPath(IWebHostEnvironment webHostEnvironment, EnumTypeFolderImage fileType)
-        {
-            var contentPath = webHostEnvironment.ContentRootPath;
-            return Path.Combine(contentPath, "Uploads", fileType.ToString());
-        }
-        private static void EnsureDirectoryExists(string folderPath)
-        {
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-        }
-        private static (string filePath, string returnFilePath) GetUniqueFilePath(string folderPath, string uniqueID, string fileExtension)
-        {
-            var fileName = uniqueID + fileExtension;
-            var filePath = Path.Combine(folderPath, fileName);
-            var returnFilePath = Path.Combine("Uploads", folderPath, fileName);
-            var count = 0;
-
-            while (File.Exists(filePath))
-            {
-                count++;
-                var newFileName = $"{uniqueID}_{count}{fileExtension}";
-                filePath = Path.Combine(folderPath, newFileName);
-                returnFilePath = Path.Combine("Uploads", folderPath, newFileName);
-            }
-            return (filePath, returnFilePath);
+            return null;
         }
 
     }

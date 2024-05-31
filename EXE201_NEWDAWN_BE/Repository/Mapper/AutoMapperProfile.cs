@@ -7,6 +7,7 @@ using DTOS.Payment;
 using DTOS.PaymentDetail;
 using DTOS.PlantCode;
 using DTOS.PlantTracking;
+using DTOS.PostingDetail;
 
 namespace Repository.Mapper
 {
@@ -28,6 +29,8 @@ namespace Repository.Mapper
            .ForMember(dest => dest.Provice, opt => opt.MapFrom(src => src.PlantCode.ProviceAddress))
            .ForMember(dest => dest.TotalStatus, opt => opt.MapFrom(src => src.PlantCode.Status));
             CreateMap<PostingNews, CreateNewsModel>().ReverseMap();
+            CreateMap<PostingNews, ResponseNewsDetail>().ReverseMap();
+            CreateMap<ResponsePostingDetail, PostingDetail>().ReverseMap();
         }
     }
 }

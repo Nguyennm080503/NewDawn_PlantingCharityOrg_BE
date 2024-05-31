@@ -16,5 +16,4 @@
     <ProjectReference Include="..\Repository\Repository.csproj" />
 	  <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
-
 </Project>

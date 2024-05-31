@@ -10,21 +10,29 @@ namespace EXE201_NEWDAWN_BE.Controllers.NewsController
     [ApiController]
     public class NewsController : ControllerBase
     {
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IPostingNewsService _newsService;
 
-        public NewsController(IPostingNewsService newsService)
+        public NewsController(IWebHostEnvironment webHostEnvironment, IPostingNewsService newsService)
         {
+            _webHostEnvironment = webHostEnvironment;
             _newsService = newsService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNews([FromBody]CreateNewsModel createNewsModel)
+        public async Task<IActionResult> CreateNews([FromForm]CreateNewsModel createNewsModel)
         {
-            var result = await _newsService.CreateNews(createNewsModel);
-            if (result == false) {
-                return Ok(new ApiResponseStatus(500, "Created Failure"));
-            }
-            return Ok(new ApiResponseStatus(201, "Created successfully"));  
+            var result = await _newsService.CreateNews(_webHostEnvironment, createNewsModel);
+            
+            return Ok(result);  
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllNews()
+        {
+            var result = await _newsService.GetAllNewsPosting();
+
+            return Ok(result);
 
         }
     }

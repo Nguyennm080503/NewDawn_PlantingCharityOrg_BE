@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BussinessObjects.Models;
 using DAO;
 using DTOS.News;
 using Repository.Interface;
@@ -27,5 +28,12 @@ namespace Repository.Implement
             return mapper.Map<IEnumerable<NewsMonthView>>(news);
 
         }
+
+        public async Task<IEnumerable<PostingNews>> GetAllPostingNews ()
+        {
+            var responseNews = await PostingNewsDAO.Instance.GetAllAsync();
+            return responseNews;
+        }
+
     }
 }

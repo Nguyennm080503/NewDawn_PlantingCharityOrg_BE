@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DTOS.PostingDetail;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace DTOS.News
 {
-    public class CreateNewsModel
+    public class ResponseNewsDetail
     {
+        public int NewsID { get; set; }
         public string NewsTitle { get; set; }
         public string NewsSummary { get; set; }
         public string Thumbnail { get; set; }
@@ -17,6 +18,7 @@ namespace DTOS.News
         public int OwnerCreateID { get; set; }
         public int Type { get; set; }
         public int Status { get; set; }
-        public List<IFormFile> fileImages {  get; set; }
+
+        public List<ResponsePostingDetail> Details { get; set; }
     }
 }

@@ -79,13 +79,13 @@ app.UseAuthorization();
 //}
 
 
-//app.UseStaticFiles(new StaticFileOptions
-//{
+app.UseStaticFiles(new StaticFileOptions
+{
 
-//    FileProvider = new PhysicalFileProvider(
-//   Path.Combine(builder.Environment.ContentRootPath, "Uploads")),
-//    RequestPath = "/Uploads"
-//});
+    FileProvider = new PhysicalFileProvider(
+   Path.Combine(builder.Environment.ContentRootPath, "Uploads")),
+    RequestPath = "/Uploads"
+});
 
 app.MapControllers();
 

@@ -21,6 +21,7 @@ namespace EXE201_NEWDAWN_BE.Extensions
             services.AddScoped<IPaymentTransactionRepository, PaymentTransactionRepository>();
             services.AddScoped<IPaymentTransactionDetailRepository, PaymentTransactionDetailRepository>();
             services.AddScoped<IImageDetailRepository, ImageDetailRepository>();
+            services.AddScoped<IPostingDetailRepository, PostingDetailRepository>();
 
             services.AddScoped<IUserInformationService, UserInformationService>();
             services.AddScoped<IPostingNewsService, PostingNewsService>();
@@ -29,6 +30,8 @@ namespace EXE201_NEWDAWN_BE.Extensions
             services.AddScoped<IPaymentTransactionService, PaymentTransactionService>();
             services.AddScoped<IPaymentTransactionDetailService, PaymentTransactionDetailService>();
             services.AddScoped<IImageDetailService, ImageDetailService>();
+            services.AddScoped<IPostingNewsService, PostingNewsService>();
+
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); //the current position of the mapping profile
 
