@@ -292,6 +292,28 @@ namespace DAO.Migrations
                     b.ToTable("PlantTracking");
                 });
 
+            modelBuilder.Entity("BussinessObjects.Models.PostingDetail", b =>
+                {
+                    b.Property<int>("PostingDetailID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostingDetailID"));
+
+                    b.Property<int>("PostingNewsID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("URLPosting")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PostingDetailID");
+
+                    b.HasIndex("PostingNewsID");
+
+                    b.ToTable("PostingDetail");
+                });
+
             modelBuilder.Entity("BussinessObjects.Models.PostingNews", b =>
                 {
                     b.Property<int>("NewsID")
@@ -436,14 +458,6 @@ namespace DAO.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BussinessObjects.Models.Collaborator", "Collaborator")
-                        .WithMany("PaymentTransactions")
-                        .HasForeignKey("AccountID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Collaborator");
-
                     b.Navigation("UserInformation");
                 });
 
@@ -488,6 +502,17 @@ namespace DAO.Migrations
                     b.Navigation("PlantCode");
                 });
 
+            modelBuilder.Entity("BussinessObjects.Models.PostingDetail", b =>
+                {
+                    b.HasOne("BussinessObjects.Models.PostingNews", "PostingNews")
+                        .WithMany("Details")
+                        .HasForeignKey("PostingNewsID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PostingNews");
+                });
+
             modelBuilder.Entity("BussinessObjects.Models.PostingNews", b =>
                 {
                     b.HasOne("BussinessObjects.Models.UserInformation", "UserInformation")
@@ -502,8 +527,6 @@ namespace DAO.Migrations
             modelBuilder.Entity("BussinessObjects.Models.Collaborator", b =>
                 {
                     b.Navigation("BannerMembers");
-
-                    b.Navigation("PaymentTransactions");
 
                     b.Navigation("UserMemberRegistrations");
                 });
@@ -531,6 +554,11 @@ namespace DAO.Migrations
             modelBuilder.Entity("BussinessObjects.Models.PlantTracking", b =>
                 {
                     b.Navigation("PlantImageDetails");
+                });
+
+            modelBuilder.Entity("BussinessObjects.Models.PostingNews", b =>
+                {
+                    b.Navigation("Details");
                 });
 
             modelBuilder.Entity("BussinessObjects.Models.UserInformation", b =>

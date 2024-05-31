@@ -12,5 +12,7 @@
         public UserInformation UserInformation { get; set; }
         public int Type { get; set; }
         public int Status { get; set; }
+
+        public IEnumerable<PostingDetail> Details { get; set; }
     }
 }

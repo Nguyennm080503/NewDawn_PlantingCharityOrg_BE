@@ -25,6 +25,7 @@ namespace DAO
         public DbSet<PlantCode> PlantCode { get; set; }
         public DbSet<PlantTracking> PlantTracking { get; set; }
         public DbSet<PostingNews> PostingNew { get; set; }
+        public DbSet<PostingDetail> PostingDetail { get; set; }
         public DbSet<UserInformation> UserInformation { get; set; }
 
 
@@ -128,6 +129,14 @@ namespace DAO
                 .ValueGeneratedOnAdd()
                 .UseIdentityColumn();
 
+            modelBuilder.Entity<PostingDetail>()
+               .HasKey(b => b.PostingDetailID);
+
+            modelBuilder.Entity<PostingDetail>()
+                .Property(b => b.PostingDetailID)
+                .ValueGeneratedOnAdd()
+                .UseIdentityColumn();
+
             modelBuilder.Entity<UserInformation>()
              .HasKey(u => u.AccountID);
 
@@ -206,6 +215,13 @@ namespace DAO
                 .WithMany(p => p.UserPostings)
                 .HasForeignKey(p => p.OwnerCreateID)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            //one posting have many detail
+            modelBuilder.Entity<PostingDetail>()
+               .HasOne(p => p.PostingNews)
+               .WithMany(p => p.Details)
+               .HasForeignKey(p => p.PostingNewsID)
+               .OnDelete(DeleteBehavior.Restrict);
 
             // one user have one collaborator
 

@@ -72,6 +72,32 @@ namespace DAO.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PaymentTransaction",
+                columns: table => new
+                {
+                    TransactionID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountBank = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BankCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BankName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccountID = table.Column<int>(type: "int", nullable: false),
+                    PaymentText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalAmout = table.Column<double>(type: "float", nullable: false),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentTransaction", x => x.TransactionID);
+                    table.ForeignKey(
+                        name: "FK_PaymentTransaction_UserInformation_AccountID",
+                        column: x => x.AccountID,
+                        principalTable: "UserInformation",
+                        principalColumn: "AccountID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PostingNew",
                 columns: table => new
                 {
@@ -150,38 +176,6 @@ namespace DAO.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PaymentTransaction",
-                columns: table => new
-                {
-                    TransactionID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountBank = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BankCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BankName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AccountID = table.Column<int>(type: "int", nullable: false),
-                    PaymentText = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TotalAmout = table.Column<double>(type: "float", nullable: false),
-                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PaymentTransaction", x => x.TransactionID);
-                    table.ForeignKey(
-                        name: "FK_PaymentTransaction_Collaborator_AccountID",
-                        column: x => x.AccountID,
-                        principalTable: "Collaborator",
-                        principalColumn: "CollaboratorID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_PaymentTransaction_UserInformation_AccountID",
-                        column: x => x.AccountID,
-                        principalTable: "UserInformation",
-                        principalColumn: "AccountID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PaymentTransactionDetail",
                 columns: table => new
                 {
@@ -199,6 +193,26 @@ namespace DAO.Migrations
                         column: x => x.PaymentID,
                         principalTable: "PaymentTransaction",
                         principalColumn: "TransactionID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PostingDetail",
+                columns: table => new
+                {
+                    PostingDetailID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PostingNewsID = table.Column<int>(type: "int", nullable: false),
+                    URLPosting = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostingDetail", x => x.PostingDetailID);
+                    table.ForeignKey(
+                        name: "FK_PostingDetail_PostingNew_PostingNewsID",
+                        column: x => x.PostingNewsID,
+                        principalTable: "PostingNew",
+                        principalColumn: "NewsID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -317,6 +331,11 @@ namespace DAO.Migrations
                 column: "PlantCodeID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PostingDetail_PostingNewsID",
+                table: "PostingDetail",
+                column: "PostingNewsID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PostingNew_OwnerCreateID",
                 table: "PostingNew",
                 column: "OwnerCreateID");
@@ -335,13 +354,19 @@ namespace DAO.Migrations
                 name: "MemberRegisterPackage");
 
             migrationBuilder.DropTable(
-                name: "PostingNew");
+                name: "PostingDetail");
 
             migrationBuilder.DropTable(
                 name: "PlantTracking");
 
             migrationBuilder.DropTable(
+                name: "Collaborator");
+
+            migrationBuilder.DropTable(
                 name: "Package");
+
+            migrationBuilder.DropTable(
+                name: "PostingNew");
 
             migrationBuilder.DropTable(
                 name: "PlantCode");
@@ -351,9 +376,6 @@ namespace DAO.Migrations
 
             migrationBuilder.DropTable(
                 name: "PaymentTransaction");
-
-            migrationBuilder.DropTable(
-                name: "Collaborator");
 
             migrationBuilder.DropTable(
                 name: "UserInformation");

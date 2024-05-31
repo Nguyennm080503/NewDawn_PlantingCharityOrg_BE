@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 using BussinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,29 +10,41 @@ public class SeedData
 {
     public static async Task SeedAccount(DataContext context)
     {
-        if (await context.PaymentTransaction.AnyAsync() && await context.PaymentTransactionDetail.AnyAsync())
-        {
-            return;
-        }
+        //if (await context.PaymentTransactionDetail.AnyAsync())
+        //{
+        //    return;
+        //}
 
-        var transactionData = await File.ReadAllTextAsync("transaction.json");
-        var detailDate = await File.ReadAllTextAsync("detail.json");
+        //var transactionData = await File.ReadAllTextAsync("transaction.json");
+        //var detailData = await File.ReadAllTextAsync("detail.json");
+        //var userData = await File.ReadAllTextAsync("AccountSeedData.json");
 
-        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        //var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-        var payments = JsonSerializer.Deserialize<List<PaymentTransaction>>(transactionData);
-        var details = JsonSerializer.Deserialize<List<PaymentTransactionDetail>>(detailDate);
+        //var payments = JsonSerializer.Deserialize<List<PaymentTransaction>>(transactionData);
+        //var details = JsonSerializer.Deserialize<List<PaymentTransactionDetail>>(detailData);
+        //var users = JsonSerializer.Deserialize<List<UserInformation>>(userData);
 
-        foreach (var payment in payments)
-        {
-            context.PaymentTransaction.Add(payment);
-        }
+        ////foreach (var user in users)
+        ////{
+        ////    using var hmac = new HMACSHA512();
 
-        foreach (var detail in details)
-        {
-            context.PaymentTransactionDetail.Add(detail);
-        }
+        ////    user.Username = user.Username.ToLower();
+        ////    user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123456"));
+        ////    user.PasswordSalt = hmac.Key;
+        ////    context.UserInformation.Add(user);
+        ////} 
 
-        await context.SaveChangesAsync();
+        ////foreach (var payment in payments)
+        ////{
+        ////    context.PaymentTransaction.Add(payment);
+        ////}
+
+        //foreach (var detail in details)
+        //{
+        //    context.PaymentTransactionDetail.Add(detail);
+        //}
+
+        //await context.SaveChangesAsync();
     }
 }
