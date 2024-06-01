@@ -21,10 +21,5 @@ namespace Service.Implement
         {
             await _plantTrackingRepository.CreateFirstTrackingPlantCode(plantcode);
         }
-
-        public async Task<int> GetTotalPlantWasPlanted()
-        {
-            return await _plantTrackingRepository.GetTotalPlantWasPlanted();
-        }
     }
 }

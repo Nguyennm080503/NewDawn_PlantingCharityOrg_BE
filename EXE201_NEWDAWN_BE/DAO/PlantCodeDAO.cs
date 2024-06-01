@@ -33,6 +33,11 @@ namespace DAO
             return await dataContext.PlantCode.Where(x => x.OwnerID == accountID).OrderByDescending(x => x.DateCreate).ToListAsync();
         }
 
+        public async Task<int> GetTotalPlantWasPlanted()
+        {
+            return dataContext.PlantCode.Where(x => x.Status != 1).Count();
+        }
+
         public async Task<IEnumerable<PlantCode>> GetAllPlantCodes()
         {
             return await dataContext.PlantCode.Include(x => x.UserInformation).OrderByDescending(x => x.DateCreate).ToListAsync();
@@ -53,6 +58,12 @@ namespace DAO
 
                 return latestPlantCode?.PlantCodeID ?? string.Empty;
             }
+        }
+
+        public async Task<int> GetTotalPlantWasPlantedEachMonth(int month, int year)
+        {
+            var plants = await dataContext.PlantCode.Where(x => x.Status != 1).ToListAsync();
+            return plants.Where(x => x.DateCreate.Month == month && x.DateCreate.Year == year).Count();
         }
     }
 }

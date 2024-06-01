@@ -8,5 +8,6 @@ namespace Repository.Interface
         Task<IEnumerable<Top4Transaction>> Top4Transactions();
         Task<IEnumerable<PaymentAdminView>> GetAllTransactions();
         Task<double> GetTotalProfit();
+        Task<double> GetTotalProfitEachMonth();
     }
 }

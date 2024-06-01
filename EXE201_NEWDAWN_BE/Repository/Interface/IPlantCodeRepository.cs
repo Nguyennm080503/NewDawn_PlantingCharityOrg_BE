@@ -8,5 +8,7 @@ namespace Repository.Interface
         Task<IEnumerable<AdminPlantCodeView>> GetAllPlantCodes();
         Task<string> CreatePlantCodeFromOrder(PlantCodeCreate plantCode);
         Task<IEnumerable<Top6PlantCode>> Get6TheNewestPlantCode();
+        Task<int> GetTotalPlantWasPlanted();
+        Task<int> GetTotalPlantWasPlantedEachMonth();
     }
 }

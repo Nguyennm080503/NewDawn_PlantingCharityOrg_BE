@@ -6,6 +6,5 @@ namespace Repository.Interface
     {
         Task<IEnumerable<PlantTrackingView>> GetAllTrackingDetailOfPlantCode(string plantcode);
         Task CreateFirstTrackingPlantCode(string plantcode);
-        Task<int> GetTotalPlantWasPlanted();
     }
 }
