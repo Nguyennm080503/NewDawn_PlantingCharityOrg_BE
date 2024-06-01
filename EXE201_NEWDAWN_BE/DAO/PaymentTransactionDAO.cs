@@ -1,4 +1,5 @@
 ﻿using BussinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAO
 {
@@ -26,6 +27,19 @@ namespace DAO
                 }
                 return _instance;
             }
+        }
+
+        public async Task<IEnumerable<PaymentTransaction>> Get4PaymentTransaction()
+        {
+            return await dataContext.PaymentTransaction.Include(x => x.UserInformation).OrderByDescending(x => x.DateCreate).Take(6).ToListAsync();
+        }
+        public async Task<IEnumerable<PaymentTransaction>> GetAllPayments()
+        {
+            return await dataContext.PaymentTransaction.Include(x => x.UserInformation).OrderByDescending(x => x.DateCreate).ToListAsync();
+        }
+        public async Task<double> GetTotalProfit()
+        {
+            return dataContext.PaymentTransaction.Sum(x => x.TotalAmout);
         }
     }
 }

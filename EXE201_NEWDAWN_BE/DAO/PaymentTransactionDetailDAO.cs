@@ -63,5 +63,10 @@ namespace DAO
 
             return payment;
         }
+
+        public int GetQuantityTransaction(int transactionID)
+        {
+            return dataContext.PaymentTransactionDetail.FirstOrDefaultAsync(x => x.PaymentID == transactionID).Result.Quantity;
+        }
     }
 }

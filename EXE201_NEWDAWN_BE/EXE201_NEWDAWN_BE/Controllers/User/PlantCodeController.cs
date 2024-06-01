@@ -30,7 +30,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.User
             }
         }
 
-        [HttpGet("user/plantcodes/detail{plantcode}")]
+        [HttpGet("user/plantcodes/detail/{plantcode}")]
         public async Task<ActionResult> GetAllPlantTrackingOfPlantCode(string plantcode)
         {   
             var plants = await _plantTrackingService.GetAllTrackingDetailOfPlantCode(plantcode);

@@ -17,7 +17,10 @@ namespace Repository.Mapper
             CreateMap<UserInformation, UserDto>().ReverseMap();
             CreateMap<PostingNews, NewsMonthView>().ReverseMap();
             CreateMap<PlantCode, PlantCodeView>().ReverseMap();
+            CreateMap<PlantCode, Top6PlantCode>().ReverseMap();
             CreateMap<PlantCodeCreate, PlantCode>().ReverseMap();
+            CreateMap<PaymentTransaction, PaymentAdminView>()
+            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserInformation.Username));
             CreateMap<ImageDetail, ImageDetailView>().ReverseMap();
             CreateMap<PaymentDetailCreate, PaymentTransactionDetail>().ReverseMap();
             CreateMap<PaymentCreate, PaymentTransaction>().ReverseMap();

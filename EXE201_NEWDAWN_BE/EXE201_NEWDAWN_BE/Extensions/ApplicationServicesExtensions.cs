@@ -29,6 +29,7 @@ namespace EXE201_NEWDAWN_BE.Extensions
             services.AddScoped<IPaymentTransactionService, PaymentTransactionService>();
             services.AddScoped<IPaymentTransactionDetailService, PaymentTransactionDetailService>();
             services.AddScoped<IImageDetailService, ImageDetailService>();
+            services.AddScoped<IDashboardService, DashboardService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); //the current position of the mapping profile
 

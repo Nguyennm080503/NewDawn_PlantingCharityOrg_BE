@@ -43,6 +43,12 @@ namespace Repository.Implement
             return mapper.Map<IEnumerable<AdminPlantCodeView>>(plants);
         }
 
+        public async Task<IEnumerable<Top6PlantCode>> Get6TheNewestPlantCode()
+        {
+            var plants = await PlantCodeDAO.Instance.Get6PlantCodes();
+            return mapper.Map<IEnumerable<Top6PlantCode>>(plants);
+        }
+
         private async Task<string> GenerateNextCode()
         {
             lock (_lock)

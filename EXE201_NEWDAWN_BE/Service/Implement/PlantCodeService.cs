@@ -17,6 +17,11 @@ namespace Service.Implement
             return await _plantCodeRepository.CreatePlantCodeFromOrder(plantCode);
         }
 
+        public async Task<IEnumerable<Top6PlantCode>> Get6TheNewestPlantCode()
+        {
+            return await _plantCodeRepository.Get6TheNewestPlantCode();
+        }
+
         public async Task<IEnumerable<PlantCodeView>> GetAllPlantCodeOfUser(int accountid)
         {
             return await _plantCodeRepository.GetAllPlantCodeOfUser(accountid);

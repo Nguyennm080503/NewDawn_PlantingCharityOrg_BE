@@ -16,5 +16,20 @@ namespace Service.Implement
         {
             return await _paymentTransactionRepository.CreatePaymentTransaction(paymentTransaction);
         }
+
+        public async Task<IEnumerable<PaymentAdminView>> GetAllTransactions()
+        {
+            return await _paymentTransactionRepository.GetAllTransactions();
+        }
+
+        public async Task<double> GetTotalProfit()
+        {
+            return await _paymentTransactionRepository.GetTotalProfit();
+        }
+
+        public async Task<IEnumerable<Top4Transaction>> Top4Transactions()
+        {
+            return await _paymentTransactionRepository.Top4Transactions();
+        }
     }
 }

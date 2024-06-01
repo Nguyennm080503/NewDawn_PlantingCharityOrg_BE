@@ -38,6 +38,11 @@ namespace DAO
             return await dataContext.PlantCode.Include(x => x.UserInformation).OrderByDescending(x => x.DateCreate).ToListAsync();
         }
 
+        public async Task<IEnumerable<PlantCode>> Get6PlantCodes()
+        {
+            return await dataContext.PlantCode.Include(x => x.UserInformation).OrderByDescending(x => x.DateCreate).Take(6).ToListAsync();
+        }
+
         public async Task<string> GetLatestPlantCode()
         {
             using (var dataContext = new DataContext())

@@ -29,5 +29,10 @@ namespace DAO
         {
             return await dataContext.PlantTracking.Include(x => x.PlantCode).Where(x => x.PlantCodeID == plantcode).ToListAsync();
         }
+
+        public async Task<int> GetTotalPlantWasPlanted()
+        {
+            return dataContext.PlantTracking.Where(x => x.Status == 2).Count();
+        }
     }
 }
