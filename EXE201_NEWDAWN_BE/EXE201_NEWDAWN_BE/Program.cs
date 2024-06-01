@@ -1,6 +1,7 @@
 using DAO;
 using EXE201_NEWDAWN_BE.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -76,6 +77,15 @@ app.UseAuthorization();
 //    var logger = services.GetService<ILogger<Program>>();
 //    logger.LogError(ex, "An error occured during migration");
 //}
+
+
+app.UseStaticFiles(new StaticFileOptions
+{
+
+    FileProvider = new PhysicalFileProvider(
+   Path.Combine(builder.Environment.ContentRootPath, "Uploads")),
+    RequestPath = "/Uploads"
+});
 
 app.MapControllers();
 

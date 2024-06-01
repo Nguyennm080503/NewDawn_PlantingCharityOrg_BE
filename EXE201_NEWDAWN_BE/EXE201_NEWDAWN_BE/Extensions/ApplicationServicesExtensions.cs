@@ -21,6 +21,7 @@ namespace EXE201_NEWDAWN_BE.Extensions
             services.AddScoped<IPaymentTransactionRepository, PaymentTransactionRepository>();
             services.AddScoped<IPaymentTransactionDetailRepository, PaymentTransactionDetailRepository>();
             services.AddScoped<IImageDetailRepository, ImageDetailRepository>();
+            services.AddScoped<IPostingDetailRepository, PostingDetailRepository>();
 
             services.AddScoped<IUserInformationService, UserInformationService>();
             services.AddScoped<IPostingNewsService, PostingNewsService>();
