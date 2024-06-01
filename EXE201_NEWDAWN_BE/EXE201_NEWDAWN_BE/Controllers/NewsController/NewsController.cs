@@ -1,14 +1,12 @@
 ﻿using DTOS.News;
-using HostelManagementWebAPI.MessageStatusResponse;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interface;
 
 namespace EXE201_NEWDAWN_BE.Controllers.NewsController
 {
-    [Route("api/news")]
     [ApiController]
-    public class NewsController : ControllerBase
+    public class NewsController : BaseApiController
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IPostingNewsService _newsService;
@@ -19,7 +17,8 @@ namespace EXE201_NEWDAWN_BE.Controllers.NewsController
             _newsService = newsService;
         }
 
-        [HttpPost]
+        [Authorize(policy: "Admin")]
+        [HttpPost("admin/news/create")]
         public async Task<IActionResult> CreateNews([FromForm]CreateNewsModel createNewsModel)
         {
             var result = await _newsService.CreateNews(_webHostEnvironment, createNewsModel);
@@ -27,7 +26,9 @@ namespace EXE201_NEWDAWN_BE.Controllers.NewsController
             return Ok(result);  
 
         }
-        [HttpGet]
+
+        [Authorize(policy: "Admin")]
+        [HttpGet("admin/news")]
         public async Task<IActionResult> GetAllNews()
         {
             var result = await _newsService.GetAllNewsPosting();
