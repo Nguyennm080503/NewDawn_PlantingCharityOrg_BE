@@ -49,6 +49,11 @@ namespace Repository.Implement
             return mapper.Map<IEnumerable<Top6PlantCode>>(plants);
         }
 
+        public async Task<int> GetTotalPlantWasPlanted()
+        {
+            return await PlantCodeDAO.Instance.GetTotalPlantWasPlanted();
+        }
+
         private async Task<string> GenerateNextCode()
         {
             lock (_lock)
@@ -71,6 +76,14 @@ namespace Repository.Implement
                 currentValue++;
                 return $"NC-{currentValue:D4}";             
             }
+        }
+
+        public async Task<int> GetTotalPlantWasPlantedEachMonth()
+        {
+            DateTime datenow = DateTime.Now;
+            int month = datenow.Month;
+            int year = datenow.Year;
+            return await PlantCodeDAO.Instance.GetTotalPlantWasPlantedEachMonth(month, year);
         }
     }
 }

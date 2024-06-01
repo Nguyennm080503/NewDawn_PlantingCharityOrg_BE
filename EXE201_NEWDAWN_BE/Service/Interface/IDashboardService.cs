@@ -5,5 +5,6 @@ namespace Service.Interface
     public interface IDashboardService
     {
         Task<TotalStatistic> GetStatisticAsync();
+        Task<TotalStatistic> GetStatisticEachMonthAsync();
     }
 }

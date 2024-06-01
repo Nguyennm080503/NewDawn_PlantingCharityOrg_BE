@@ -41,10 +41,5 @@ namespace Repository.Implement
             plantTracking.PlantCodeID = plantcode;
             await PlantTrackingDAO.Instance.CreateAsync(plantTracking);
         }
-
-        public async Task<int> GetTotalPlantWasPlanted()
-        {
-            return await PlantTrackingDAO.Instance.GetTotalPlantWasPlanted();
-        }
     }
 }

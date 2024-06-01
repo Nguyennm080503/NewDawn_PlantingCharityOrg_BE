@@ -35,6 +35,14 @@ namespace Repository.Implement
             return await PaymentTransactionDAO.Instance.GetTotalProfit();
         }
 
+        public async Task<double> GetTotalProfitEachMonth()
+        {
+            DateTime datenow = DateTime.Now;
+            int month = datenow.Month;
+            int year = datenow.Year;
+            return await PaymentTransactionDAO.Instance.GetTotalProfitEachMonth(month, year);
+        }
+
         public async Task<IEnumerable<Top4Transaction>> Top4Transactions()
         {
             var payments = await PaymentTransactionDAO.Instance.Get4PaymentTransaction();

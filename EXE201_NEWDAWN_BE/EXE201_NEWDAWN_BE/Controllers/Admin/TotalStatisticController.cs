@@ -29,5 +29,20 @@ namespace EXE201_NEWDAWN_BE.Controllers.Admin
                 return BadRequest(new ApiResponseStatus(404, "No data"));
             }
         }
+
+        [Authorize(policy: "Admin")]
+        [HttpGet("admin/total/eachmonth")]
+        public async Task<ActionResult> GetTotalEachMonth()
+        {
+            var total = await _dashboardService.GetStatisticEachMonthAsync();
+            if (total != null)
+            {
+                return Ok(total);
+            }
+            else
+            {
+                return BadRequest(new ApiResponseStatus(404, "No data"));
+            }
+        }
     }
 }
