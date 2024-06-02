@@ -36,7 +36,13 @@ namespace EXE201_NEWDAWN_BE.Extensions
 
             services.AddCors(opt =>
             {
-                opt.AddPolicy("CorsPolicy", policy => { policy.WithOrigins("http://localhost:5173").AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5173")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                });
             });
 
 
