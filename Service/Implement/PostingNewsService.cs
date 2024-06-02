@@ -29,9 +29,11 @@ namespace Service.Implement
             return news;
         }
 
-        public async Task<ResponseNewsDetail> CreateNews(IWebHostEnvironment webHostEnvironment, CreateNewsModel createNewsModel)
+        public async Task<ResponseNewsDetail> CreateNews(IWebHostEnvironment webHostEnvironment, CreateNewsModel createNewsModel, int userIdLogin)
         {
             var createNewsEntity = _mapper.Map<PostingNews>(createNewsModel);
+            createNewsEntity.DateCreate = DateTime.UtcNow;
+            createNewsEntity.OwnerCreateID = userIdLogin;
             await _postingNewsRepository.CreateNews(createNewsEntity);
             var responseNewDetail = _mapper.Map<ResponseNewsDetail>(createNewsEntity);
             foreach (var fileImage in createNewsModel.fileImages)

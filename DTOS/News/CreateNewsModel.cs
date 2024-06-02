@@ -13,8 +13,6 @@ namespace DTOS.News
         public string NewsSummary { get; set; }
         public string Thumbnail { get; set; }
         public string NewsDescription { get; set; }
-        public DateTime DateCreate { get; set; }
-        public int OwnerCreateID { get; set; }
         public int Type { get; set; }
         public int Status { get; set; }
         public List<IFormFile> fileImages {  get; set; }

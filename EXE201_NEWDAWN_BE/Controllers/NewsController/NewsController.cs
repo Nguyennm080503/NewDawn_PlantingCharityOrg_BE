@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interface;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace EXE201_NEWDAWN_BE.Controllers.NewsController
 {
@@ -21,7 +22,8 @@ namespace EXE201_NEWDAWN_BE.Controllers.NewsController
         [HttpPost("admin/news/create")]
         public async Task<IActionResult> CreateNews([FromForm]CreateNewsModel createNewsModel)
         {
-            var result = await _newsService.CreateNews(_webHostEnvironment, createNewsModel);
+            var userIdLogIn = GetLoginAccountId();
+            var result = await _newsService.CreateNews(_webHostEnvironment, createNewsModel, userIdLogIn);
             
             return Ok(result);  
 
