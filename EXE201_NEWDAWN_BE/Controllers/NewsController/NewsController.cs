@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interface;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace EXE201_NEWDAWN_BE.Controllers.NewsController
 {
