@@ -8,5 +8,6 @@ namespace Repository.Interface
         Task<IEnumerable<NewsMonthView>> GetAllNewsEachMonth();
         Task<bool> CreateNews(PostingNews postingNews);
         Task<IEnumerable<PostingNews>> GetAllPostingNews();
+        Task<IEnumerable<NewsType>> GetAllNewsByType(int typeID);
     }
 }

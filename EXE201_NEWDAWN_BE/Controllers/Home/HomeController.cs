@@ -3,6 +3,7 @@ using DTOS.PaymentDetail;
 using HostelManagementWebAPI.MessageStatusResponse;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interface;
+using System;
 
 namespace EXE201_NEWDAWN_BE.Controllers.Home
 {
@@ -55,6 +56,20 @@ namespace EXE201_NEWDAWN_BE.Controllers.Home
                 return Ok(postings);
             }
             catch(Exception ex)
+            {
+                return StatusCode(500, new ApiResponseStatus(500, ex.Message));
+            }
+        }
+
+        [HttpGet("home/news/type/{typeID}")]
+        public async Task<ActionResult<IEnumerable<NewsType>>> GetAllNewsByType(int typeID)
+        {
+            try
+            {
+                var postings = await _newsService.GetAllNewsByType(typeID);
+                return Ok(postings);
+            }
+            catch (Exception ex)
             {
                 return StatusCode(500, new ApiResponseStatus(500, ex.Message));
             }

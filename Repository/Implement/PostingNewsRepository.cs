@@ -2,6 +2,7 @@
 using BussinessObjects.Models;
 using DAO;
 using DTOS.News;
+using DTOS.PostingDetail;
 using Repository.Interface;
 
 namespace Repository.Implement
@@ -18,6 +19,20 @@ namespace Repository.Implement
         {
             var result = await PostingNewsDAO.Instance.CreateAsync(postingNews);
             return result;
+        }
+
+        public async Task<IEnumerable<NewsType>> GetAllNewsByType(int typeID)
+        {
+            var news = new List<NewsType>();
+            var postings = await PostingNewsDAO.Instance.GetAllNewsByType(typeID);
+            foreach (var post in postings)
+            {
+                var images = await PostingDetailDAO.Instance.GetAllPostingNews(post.NewsID);
+                var postingView = mapper.Map<NewsType>(post);
+                postingView.Details = mapper.Map<IEnumerable<ResponsePostingDetail>>(images);
+                news.Add(postingView);
+            }
+            return news;
         }
 
         public async Task<IEnumerable<NewsMonthView>> GetAllNewsEachMonth()

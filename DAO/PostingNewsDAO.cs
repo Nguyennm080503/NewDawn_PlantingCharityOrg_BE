@@ -1,4 +1,5 @@
 ﻿using BussinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAO
 {
@@ -22,6 +23,11 @@ namespace DAO
                 }
                 return instance;
             }
+        }
+
+        public async Task<IEnumerable<PostingNews>> GetAllNewsByType(int typeID)
+        {
+            return await dataContext.PostingNew.Where(x => x.Type == typeID && x.Status == 0).OrderByDescending(x => x.DateCreate).ToListAsync();
         }
     }
 }

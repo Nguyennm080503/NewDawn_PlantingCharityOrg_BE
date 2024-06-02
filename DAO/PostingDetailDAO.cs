@@ -1,4 +1,5 @@
 ﻿using BussinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,11 @@ namespace DAO
                 }
                 return instance;
             }
+        }
+
+        public async Task<IEnumerable<PostingDetail>> GetAllPostingNews(int postingID)
+        {
+            return await dataContext.PostingDetail.Where(x => x.PostingNewsID == postingID).ToListAsync();
         }
     }
 }

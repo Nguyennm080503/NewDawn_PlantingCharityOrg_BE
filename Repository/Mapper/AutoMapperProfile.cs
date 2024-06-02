@@ -23,6 +23,8 @@ namespace Repository.Mapper
             CreateMap<PaymentTransaction, PaymentAdminView>()
             .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserInformation.Username));
             CreateMap<ImageDetail, ImageDetailView>().ReverseMap();
+            CreateMap<PostingNews, NewsType>().ReverseMap();
+            CreateMap<PostingDetail, ResponsePostingDetail>().ReverseMap();
             CreateMap<PaymentDetailCreate, PaymentTransactionDetail>().ReverseMap();
             CreateMap<PaymentCreate, PaymentTransaction>().ReverseMap();
             CreateMap<PlantCode, AdminPlantCodeView>()

@@ -64,5 +64,9 @@ namespace Service.Implement
 
         }
 
+        public async Task<IEnumerable<NewsType>> GetAllNewsByType(int typeID)
+        {
+            return await _postingNewsRepository.GetAllNewsByType(typeID);
+        }
     }
 }
