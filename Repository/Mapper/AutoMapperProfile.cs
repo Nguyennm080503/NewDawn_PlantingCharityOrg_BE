@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BussinessObjects.Models;
+using DTOS.Account;
 using DTOS.ImageTracking;
 using DTOS.Login;
 using DTOS.News;
@@ -16,6 +17,7 @@ namespace Repository.Mapper
         public AutoMapperProfile() 
         {
             CreateMap<UserInformation, UserDto>().ReverseMap();
+            CreateMap<UserInformation, UserInformationView>().ReverseMap();
             CreateMap<PostingNews, NewsMonthView>().ReverseMap();
             CreateMap<PlantCode, PlantCodeView>().ReverseMap();
             CreateMap<PlantCode, Top6PlantCode>().ReverseMap();
