@@ -5,19 +5,22 @@ using DTOS.News;
 using DTOS.PostingDetail;
 using Microsoft.AspNetCore.Hosting;
 using Repository.Interface;
+using Service.Helper.ImageHandler;
 using Service.Interface;
 
 namespace Service.Implement
 {
     public class PostingNewsService : IPostingNewsService
     {
+        private readonly IImageHandler _imageHandler;
         private readonly IPostingDetailRepository _postingDetailRepository;
         private readonly IPostingNewsRepository _postingNewsRepository;
         private readonly IMapper _mapper;
 
 
-        public PostingNewsService(IPostingNewsRepository postingNewsRepository, IPostingDetailRepository postingDetailRepository, IMapper mapper) 
+        public PostingNewsService(IImageHandler imageHandler, IPostingNewsRepository postingNewsRepository, IPostingDetailRepository postingDetailRepository, IMapper mapper)
         {
+            _imageHandler = imageHandler;
             _postingDetailRepository = postingDetailRepository;
             _postingNewsRepository = postingNewsRepository;
             _mapper = mapper;
@@ -36,17 +39,16 @@ namespace Service.Implement
             createNewsEntity.OwnerCreateID = userIdLogin;
             await _postingNewsRepository.CreateNews(createNewsEntity);
             var responseNewDetail = _mapper.Map<ResponseNewsDetail>(createNewsEntity);
-            foreach (var fileImage in createNewsModel.fileImages)
+
+            String urlImage = _imageHandler.UploadImageToFileReturnURL(createNewsModel.fileImage);
+            var postingDetailEntity = new PostingDetail
             {
-                String urlImage = await Helper.ImageHandler.UploadImageToFileReturnURL(webHostEnvironment, fileImage, EnumTypeFolderImage.news.ToString(), Guid.NewGuid().ToString("N"));
-                var postingDetailEntity = new PostingDetail
-                {
-                    PostingNewsID = createNewsEntity.NewsID,
-                    URLPosting = urlImage,
-                };
-                await _postingDetailRepository.CreatePostingDetail(postingDetailEntity);
-                responseNewDetail.Details.Add(_mapper.Map<ResponsePostingDetail>(postingDetailEntity));
-            }
+                PostingNewsID = createNewsEntity.NewsID,
+                URLPosting = urlImage,
+            };
+            await _postingDetailRepository.CreatePostingDetail(postingDetailEntity);
+            responseNewDetail.Details.Add(_mapper.Map<ResponsePostingDetail>(postingDetailEntity));
+
             return responseNewDetail;
         }
 
@@ -54,7 +56,7 @@ namespace Service.Implement
         {
             var responseNews = _postingNewsRepository.GetAllPostingNews().Result.ToList();
             var responsePostingDetail = await _postingDetailRepository.GetAllPostingDetail();
-            
+
             foreach (var responseNew in responseNews)
             {
                 responseNew.Details = responsePostingDetail.Where(x => x.PostingNewsID == responseNew.NewsID);

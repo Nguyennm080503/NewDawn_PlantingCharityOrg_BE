@@ -1,5 +1,6 @@
 ﻿using Repository.Implement;
 using Repository.Interface;
+using Service.Helper.ImageHandler;
 using Service.Implement;
 using Service.Interface;
 using Service.Mail;
@@ -31,6 +32,7 @@ namespace EXE201_NEWDAWN_BE.Extensions
             services.AddScoped<IPaymentTransactionDetailService, PaymentTransactionDetailService>();
             services.AddScoped<IImageDetailService, ImageDetailService>();
             services.AddScoped<IDashboardService, DashboardService>();
+            services.AddSingleton<IImageHandler, ImageHandler>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); //the current position of the mapping profile
 

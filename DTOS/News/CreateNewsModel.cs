@@ -15,6 +15,6 @@ namespace DTOS.News
         public string NewsDescription { get; set; }
         public int Type { get; set; }
         public int Status { get; set; }
-        public List<IFormFile> fileImages {  get; set; }
+        public IFormFile fileImage {  get; set; }
     }
 }
