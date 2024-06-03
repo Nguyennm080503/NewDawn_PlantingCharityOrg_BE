@@ -35,32 +35,34 @@ namespace Service.Implement
         public async Task<ResponseNewsDetail> CreateNews(IWebHostEnvironment webHostEnvironment, CreateNewsModel createNewsModel, int userIdLogin)
         {
             var createNewsEntity = _mapper.Map<PostingNews>(createNewsModel);
+            String urlImage = _imageHandler.UploadImageToFileReturnURL(createNewsModel.fileImage);
             createNewsEntity.DateCreate = DateTime.UtcNow;
             createNewsEntity.OwnerCreateID = userIdLogin;
+            createNewsEntity.Thumbnail = urlImage;
+            createNewsEntity.Status = 0;
             await _postingNewsRepository.CreateNews(createNewsEntity);
             var responseNewDetail = _mapper.Map<ResponseNewsDetail>(createNewsEntity);
 
-            String urlImage = _imageHandler.UploadImageToFileReturnURL(createNewsModel.fileImage);
-            var postingDetailEntity = new PostingDetail
-            {
-                PostingNewsID = createNewsEntity.NewsID,
-                URLPosting = urlImage,
-            };
-            await _postingDetailRepository.CreatePostingDetail(postingDetailEntity);
-            responseNewDetail.Details.Add(_mapper.Map<ResponsePostingDetail>(postingDetailEntity));
+            //var postingDetailEntity = new PostingDetail
+            //{
+            //    PostingNewsID = createNewsEntity.NewsID,
+            //    URLPosting = urlImage,
+            //};
+            //await _postingDetailRepository.CreatePostingDetail(postingDetailEntity);
+            //responseNewDetail.Details.Add(_mapper.Map<ResponsePostingDetail>(postingDetailEntity));
 
             return responseNewDetail;
         }
 
         public async Task<IEnumerable<ResponseNewsDetail>> GetAllNewsPosting()
         {
-            var responseNews = _postingNewsRepository.GetAllPostingNews().Result.ToList();
-            var responsePostingDetail = await _postingDetailRepository.GetAllPostingDetail();
+            var responseNews = _postingNewsRepository.GetAllPostingNews().Result.Where(x => x.Status == 0).ToList();
+            //var responsePostingDetail = await _postingDetailRepository.GetAllPostingDetail();
 
-            foreach (var responseNew in responseNews)
-            {
-                responseNew.Details = responsePostingDetail.Where(x => x.PostingNewsID == responseNew.NewsID);
-            }
+            //foreach (var responseNew in responseNews)
+            //{
+            //    responseNew.Details = responsePostingDetail.Where(x => x.PostingNewsID == responseNew.NewsID);
+            //}
 
             return _mapper.Map<IEnumerable<ResponseNewsDetail>>(responseNews);
 

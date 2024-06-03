@@ -19,6 +19,6 @@ namespace DTOS.News
         public int Type { get; set; }
         public int Status { get; set; }
 
-        public List<ResponsePostingDetail> Details { get; set; }
+        //public List<ResponsePostingDetail> Details { get; set; }
     }
 }
