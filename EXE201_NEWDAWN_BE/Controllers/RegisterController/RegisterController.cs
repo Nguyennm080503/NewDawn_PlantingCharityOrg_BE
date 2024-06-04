@@ -38,7 +38,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.RegisterController
             {
                 To = email,
                 Subject = "Nuôi cây",
-                Body = otp
+                Body = ""
             }, otp);
             return Ok(otpHashSHA256);
         }

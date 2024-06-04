@@ -71,12 +71,12 @@ namespace Service.Implement
 
         public async Task<ResponseNewsDetail> GetNewsDetail(int newsID)
         {
-            return _mapper.Map<ResponseNewsDetail>( await _postingNewsRepository.GetNewsDetail(newsID));
+            return _mapper.Map<ResponseNewsDetail>( await _postingNewsRepository.GetNewsDetailById(newsID));
         }
 
         public async Task DeleteNews(int id)
         {
-            await _postingNewsRepository.DeleteNews(id);
+            await _postingNewsRepository.DeleteNewsById(id);
         }
     }
 }

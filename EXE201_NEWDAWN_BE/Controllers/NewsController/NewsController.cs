@@ -47,7 +47,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.NewsController
             return Ok(result);
         }
 
-        [Authorize(policy: "Admin")]
+
         [HttpPut("admin/news/delete/{newID}")]
         public async Task<IActionResult> DeleteNews(int newID)
         {
