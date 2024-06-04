@@ -29,5 +29,9 @@ namespace DAO
         {
             return await dataContext.PostingNew.Where(x => x.Type == typeID && x.Status == 0).OrderByDescending(x => x.DateCreate).ToListAsync();
         }
+        public async Task<PostingNews> GetNewsById(int id)
+        {
+            return await dataContext.PostingNew.Where(x => x.NewsID == id && x.Status == 0).FirstOrDefaultAsync();
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace Service.Interface
 {
     public interface IMailService
     {
-        void SendMail(MailContent mailContent);
+        Task SendMailAsync(MailContent mailContent, string otp);
+        string HashOTP(string otp);
     }
 }

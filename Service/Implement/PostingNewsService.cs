@@ -72,5 +72,15 @@ namespace Service.Implement
         {
             return await _postingNewsRepository.GetAllNewsByType(typeID);
         }
+
+        public async Task<ResponseNewsDetail> GetNewsDetail(int id)
+        {
+            return _mapper.Map<ResponseNewsDetail>(await _postingNewsRepository.GetNewsDetailById(id));
+        }
+
+        public async Task<bool> DeleteNewsById(int id)
+        {
+            return await _postingNewsRepository.DeleteNewsById(id);
+        }
     }
 }

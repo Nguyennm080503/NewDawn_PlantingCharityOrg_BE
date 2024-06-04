@@ -36,6 +36,19 @@ namespace EXE201_NEWDAWN_BE.Controllers.NewsController
             return Ok(result);
         }
 
+        [HttpGet("admin/news/{id}")]
+        public async Task<IActionResult> GetAllNews([FromRoute] int id)
+        {
+            var result = await _newsService.GetNewsDetail(id);
+            return Ok(result);
+        }
+
+        [HttpDelete("admin/news/{id}")]
+        public async Task<IActionResult> DeleteNewsById([FromRoute] int id)
+        {
+            var result = await _newsService.DeleteNewsById(id);
+            return Ok(result);
+        }
 
         //[HttpDelete("admin/news")]
         //public async Task<IActionResult> DeleteNews()
