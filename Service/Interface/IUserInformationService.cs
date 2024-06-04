@@ -10,5 +10,7 @@ namespace Service.Interface
         Task<IEnumerable<UserInformationView>> GetListMemberUser();
         Task UpdateStatusMemberAccount(StatusParams statusParams);
         Task<UserInformation> GetUserByAccount(int accountID);
+        Task<ProfileView> GetProfile(int accountID);
+        Task UpdateProfile(ProfileUpade profileUpade);
     }
 }

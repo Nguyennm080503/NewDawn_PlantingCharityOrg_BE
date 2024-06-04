@@ -41,5 +41,39 @@ namespace Repository.Implement
             plantTracking.PlantCodeID = plantcode;
             await PlantTrackingDAO.Instance.CreateAsync(plantTracking);
         }
+
+        public async Task CreateTrackingPlantCode(PlantTrackingCreate trackingCreate, List<string> listTracking)
+        {
+            var plantTracking = new PlantTracking()
+            {
+                PlantCodeID = trackingCreate.PlantCodeID,
+                ContentText = trackingCreate.ContentText,
+                DateCreate = DateTime.Now,
+                Status = trackingCreate.Status,
+            };
+            try
+            {
+                await PlantTrackingDAO.Instance.CreateAsync(plantTracking);
+                var trackingId = plantTracking.TrackingID;
+                var plantCode = PlantCodeDAO.Instance.GetAllAsync().Result.FirstOrDefault(x => x.PlantCodeID == trackingCreate.PlantCodeID);
+                plantCode.Status = trackingCreate.Status;
+                await PlantCodeDAO.Instance.UpdateAsync(plantCode);
+                if (trackingId != 0)
+                {
+                    foreach (var item in listTracking)
+                    {
+                        var imageDetail = new ImageDetail()
+                        {
+                            TrackingID = trackingId,
+                            Url = item
+                        };
+                        await ImageDetailDAO.Instance.CreateAsync(imageDetail);
+                    }
+                }
+            }catch (Exception ex)
+            {
+                await Task.FromException(ex);
+            }
+        }
     }
 }

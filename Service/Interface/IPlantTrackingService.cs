@@ -1,4 +1,5 @@
 ﻿using DTOS.PlantTracking;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Service.Interface
 {
@@ -6,5 +7,6 @@ namespace Service.Interface
     {
         Task<IEnumerable<PlantTrackingView>> GetAllTrackingDetailOfPlantCode(string plantcode);
         Task CreateFirstTrackingPlantCode(string plantcode);
+        Task CreatePlantTracking(IWebHostEnvironment webHostEnvironment, PlantTrackingCreate trackingCreate);
     }
 }

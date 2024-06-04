@@ -33,6 +33,15 @@ namespace Repository.Implement
             return mapper.Map<IEnumerable<UserInformationView>>(users);
         }
 
+        public async Task UpdateProfile(ProfileUpade profileUpade)
+        {
+            var profile = await UserInformationDAO.Instance.GetAccountById(profileUpade.AccountID);
+            profile.PhoneNumber = profileUpade.PhoneNumber;
+            profile.FullName = profileUpade.FullName;
+            profile.Email = profileUpade.Email;
+            await UserInformationDAO.Instance.UpdateAsync(profile);
+        }
+
         public async Task UpdateStatusMemberAccount(UserInformation userInformation)
         {
             await UserInformationDAO.Instance.UpdateAsync(userInformation);

@@ -44,5 +44,6 @@ namespace EXE201_NEWDAWN_BE.Controllers.Admin
                 return BadRequest(new ApiResponseStatus(404, "No data"));
             }
         }
+
     }
 }

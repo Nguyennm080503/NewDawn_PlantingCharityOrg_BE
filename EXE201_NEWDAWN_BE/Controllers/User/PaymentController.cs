@@ -2,6 +2,7 @@
 using DTOS.PaymentDetail;
 using DTOS.PlantCode;
 using HostelManagementWebAPI.MessageStatusResponse;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interface;
 using Service.Mail;
@@ -28,6 +29,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.User
             _userInformationService = userInformationService;
         }
 
+        [Authorize(policy: "Member")]
         [HttpPost("user/payment")]
         public async Task<ActionResult> PaymentTransactionProccess(ParamTransaction paramTransaction)
         {
