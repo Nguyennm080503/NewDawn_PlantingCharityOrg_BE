@@ -28,22 +28,14 @@ namespace EXE201_NEWDAWN_BE.Controllers.NewsController
 
         }
 
+        [Authorize(policy: "Admin")]
         [HttpGet("admin/news")]
         public async Task<IActionResult> GetAllNews()
         {
             var result = await _newsService.GetAllNewsPosting();
 
             return Ok(result);
+
         }
-
-
-        //[HttpDelete("admin/news")]
-        //public async Task<IActionResult> DeleteNews()
-        //{
-        //    var result = await _newsService.GetAllNewsPosting();
-
-        //    return Ok(result);
-
-        //}
     }
 }

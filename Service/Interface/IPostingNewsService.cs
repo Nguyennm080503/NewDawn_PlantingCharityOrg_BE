@@ -9,6 +9,5 @@ namespace Service.Interface
         Task<ResponseNewsDetail> CreateNews(IWebHostEnvironment webHostEnvironment,CreateNewsModel createNewsModel, int userIdLogin);
         Task<IEnumerable<ResponseNewsDetail>> GetAllNewsPosting();
         Task<IEnumerable<NewsType>> GetAllNewsByType(int typeID);
-        //Task<bool> DeleteNews(int id);
     }
 }
