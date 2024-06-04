@@ -1,4 +1,5 @@
 ﻿using HostelManagementWebAPI.MessageStatusResponse;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interface;
 
@@ -16,6 +17,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.User
             _plantTrackingService = plantTrackingService;
         }
 
+        [Authorize(policy: "Member")]
         [HttpGet("user/plantcodes/{accountID}")]
         public async Task<ActionResult> GetAllPlantCodeOfUser(int accountID)
         {
@@ -30,6 +32,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.User
             }
         }
 
+        [Authorize(policy: "Member")]
         [HttpGet("user/plantcodes/detail/{plantcode}")]
         public async Task<ActionResult> GetAllPlantTrackingOfPlantCode(string plantcode)
         {   

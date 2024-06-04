@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using BussinessObjects.Enumeration;
 using BussinessObjects.Models;
 using DTOS.News;
-using DTOS.PostingDetail;
 using Microsoft.AspNetCore.Hosting;
 using Repository.Interface;
 using Service.Helper.ImageHandler;
@@ -13,15 +11,13 @@ namespace Service.Implement
     public class PostingNewsService : IPostingNewsService
     {
         private readonly IImageHandler _imageHandler;
-        private readonly IPostingDetailRepository _postingDetailRepository;
         private readonly IPostingNewsRepository _postingNewsRepository;
         private readonly IMapper _mapper;
 
 
-        public PostingNewsService(IImageHandler imageHandler, IPostingNewsRepository postingNewsRepository, IPostingDetailRepository postingDetailRepository, IMapper mapper)
+        public PostingNewsService(IImageHandler imageHandler, IPostingNewsRepository postingNewsRepository, IMapper mapper)
         {
             _imageHandler = imageHandler;
-            _postingDetailRepository = postingDetailRepository;
             _postingNewsRepository = postingNewsRepository;
             _mapper = mapper;
         }
@@ -54,9 +50,9 @@ namespace Service.Implement
             return responseNewDetail;
         }
 
-        public async Task<IEnumerable<ResponseNewsDetail>> GetAllNewsPosting()
+        public async Task<IEnumerable<NewsType>> GetAllNewsPosting()
         {
-            var responseNews = _postingNewsRepository.GetAllPostingNews().Result.Where(x => x.Status == 0).ToList();
+            var responseNews = await _postingNewsRepository.GetAllPostingNews();
             //var responsePostingDetail = await _postingDetailRepository.GetAllPostingDetail();
 
             //foreach (var responseNew in responseNews)
@@ -64,7 +60,7 @@ namespace Service.Implement
             //    responseNew.Details = responsePostingDetail.Where(x => x.PostingNewsID == responseNew.NewsID);
             //}
 
-            return _mapper.Map<IEnumerable<ResponseNewsDetail>>(responseNews);
+            return _mapper.Map<IEnumerable<NewsType>>(responseNews);
 
         }
 
@@ -73,14 +69,14 @@ namespace Service.Implement
             return await _postingNewsRepository.GetAllNewsByType(typeID);
         }
 
-        public async Task<ResponseNewsDetail> GetNewsDetail(int id)
+        public async Task<ResponseNewsDetail> GetNewsDetail(int newsID)
         {
-            return _mapper.Map<ResponseNewsDetail>(await _postingNewsRepository.GetNewsDetailById(id));
+            return await _postingNewsRepository.GetNewsDetail(newsID);
         }
 
-        public async Task<bool> DeleteNewsById(int id)
+        public async Task DeleteNews(int id)
         {
-            return await _postingNewsRepository.DeleteNewsById(id);
+            await _postingNewsRepository.DeleteNews(id);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using DTOS.PostingDetail;
-
-namespace DTOS.News
+﻿namespace DTOS.News
 {
     public class NewsType
     {
@@ -10,7 +8,5 @@ namespace DTOS.News
         public string Thumbnail { get; set; }
         public string NewsDescription { get; set; }
         public DateTime DateCreate { get; set; }
-
-        public IEnumerable<ResponsePostingDetail> Details { get; set; }
     }
 }

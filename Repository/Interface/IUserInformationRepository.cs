@@ -9,5 +9,6 @@ namespace Repository.Interface
         Task<IEnumerable<UserInformationView>> GetListMemberUser();
         Task<UserInformation> GetAccountById(int id);
         Task UpdateStatusMemberAccount(UserInformation userInformation);
+        Task UpdateProfile(ProfileUpade profileUpade);
     }
 }

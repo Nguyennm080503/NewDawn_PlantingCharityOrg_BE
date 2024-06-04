@@ -1,6 +1,7 @@
 ﻿using DTOS.News;
 using DTOS.PaymentDetail;
 using HostelManagementWebAPI.MessageStatusResponse;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interface;
 using System;
@@ -73,6 +74,14 @@ namespace EXE201_NEWDAWN_BE.Controllers.Home
             {
                 return StatusCode(500, new ApiResponseStatus(500, ex.Message));
             }
+        }
+
+        [HttpGet("home/news/detail/{newsID}")]
+        public async Task<IActionResult> GetNewsDetail(int newsID)
+        {
+            var result = await _newsService.GetNewsDetail(newsID);
+
+            return Ok(result);
         }
     }
 }

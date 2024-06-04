@@ -51,6 +51,22 @@ namespace Service.Implement
             return users;
         }
 
+        public async Task<ProfileView> GetProfile(int accountID)
+        {
+            var profile = await _userInformationRepository.GetAccountById(accountID);
+            return _mapper.Map<ProfileView>(profile);
+        }
+
+        public async Task<UserInformation> GetUserByAccount(int accountID)
+        {
+            return await _userInformationRepository.GetAccountById(accountID);
+        }
+
+        public async Task UpdateProfile(ProfileUpade profileUpade)
+        {
+            await _userInformationRepository.UpdateProfile(profileUpade);
+        }
+
         public async Task UpdateStatusMemberAccount(StatusParams statusParams)
         {
             var user = _userInformationRepository.GetAccountById(statusParams.AccountID);

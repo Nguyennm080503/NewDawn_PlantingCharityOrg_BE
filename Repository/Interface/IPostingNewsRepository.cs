@@ -7,7 +7,7 @@ namespace Repository.Interface
     {
         Task<IEnumerable<NewsMonthView>> GetAllNewsEachMonth();
         Task<bool> CreateNews(PostingNews postingNews);
-        Task<IEnumerable<PostingNews>> GetAllPostingNews();
+        Task<IEnumerable<NewsType>> GetAllPostingNews();
         Task<IEnumerable<NewsType>> GetAllNewsByType(int typeID);
         Task<PostingNews> GetNewsDetailById(int id);
         Task<bool> DeleteNewsById(int id);

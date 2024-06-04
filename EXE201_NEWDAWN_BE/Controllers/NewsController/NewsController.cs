@@ -1,4 +1,5 @@
 ﻿using DTOS.News;
+using HostelManagementWebAPI.MessageStatusResponse;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interface;
@@ -28,6 +29,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.NewsController
 
         }
 
+        [Authorize(policy: "Admin")]
         [HttpGet("admin/news")]
         public async Task<IActionResult> GetAllNews()
         {
@@ -36,27 +38,29 @@ namespace EXE201_NEWDAWN_BE.Controllers.NewsController
             return Ok(result);
         }
 
-        [HttpGet("admin/news/{id}")]
-        public async Task<IActionResult> GetAllNews([FromRoute] int id)
+        [Authorize(policy: "Admin")]
+        [HttpGet("admin/news/detail/{newsID}")]
+        public async Task<IActionResult> GetNewsDetail(int newsID)
         {
-            var result = await _newsService.GetNewsDetail(id);
+            var result = await _newsService.GetNewsDetail(newsID);
+
             return Ok(result);
         }
 
-        [HttpDelete("admin/news/{id}")]
-        public async Task<IActionResult> DeleteNewsById([FromRoute] int id)
+        [Authorize(policy: "Admin")]
+        [HttpPut("admin/news/delete/{newID}")]
+        public async Task<IActionResult> DeleteNews(int newID)
         {
-            var result = await _newsService.DeleteNewsById(id);
-            return Ok(result);
+            try
+            {
+                await _newsService.DeleteNews(newID);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponseStatus(400, "Exception when excuting in server!"));
+            }
+
         }
-
-        //[HttpDelete("admin/news")]
-        //public async Task<IActionResult> DeleteNews()
-        //{
-        //    var result = await _newsService.GetAllNewsPosting();
-
-        //    return Ok(result);
-
-        //}
     }
 }
