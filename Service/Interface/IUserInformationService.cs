@@ -1,5 +1,4 @@
-﻿using BussinessObjects.Models;
-using DTOS.Account;
+﻿using DTOS.Account;
 using DTOS.Login;
 
 namespace Service.Interface
@@ -9,6 +8,5 @@ namespace Service.Interface
         Task<UserDto> GetAccountLoginByUsername(LoginDto loginDto);
         Task<IEnumerable<UserInformationView>> GetListMemberUser();
         Task UpdateStatusMemberAccount(StatusParams statusParams);
-        Task<UserInformation> GetUserByAccount(int accountID);
     }
 }
