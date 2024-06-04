@@ -43,6 +43,8 @@ namespace EXE201_NEWDAWN_BE.Controllers.RegisterController
             return Ok(otpHashSHA256);
         }
 
+        //[HttpPost()]
+        //public async Task<IActionResult> Register()
 
 
     }

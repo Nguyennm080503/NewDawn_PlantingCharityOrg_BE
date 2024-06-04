@@ -18,7 +18,7 @@ namespace Service.Implement
 
         public async Task SendMailOTPAsync(MailContent mailContent, string otp)
         {
-            var emailTemplatePath = Path.Combine(Directory.GetCurrentDirectory(), "Template", "OTPEmailTemplate.html");
+            var emailTemplatePath = Path.Combine(Directory.GetCurrentDirectory(), "Template", "OTPEmailTemplate.cs");
             var emailBody = await File.ReadAllTextAsync(emailTemplatePath);
             emailBody = emailBody.Replace("@Insert.OTP", otp);
 
