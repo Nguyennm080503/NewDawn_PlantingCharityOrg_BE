@@ -16,7 +16,7 @@ namespace Service.Implement
             _mailSetting = options.Value;
         }
 
-        public async Task SendMailAsync(MailContent mailContent, string otp)
+        public async Task SendMailOTPAsync(MailContent mailContent, string otp)
         {
             var emailTemplatePath = Path.Combine(Directory.GetCurrentDirectory(), "Template", "OTPEmailTemplate.html");
             var emailBody = await File.ReadAllTextAsync(emailTemplatePath);
@@ -59,6 +59,32 @@ namespace Service.Implement
                 }
                 return builder.ToString();
             }
+        }
+
+        public void SendMail(MailContent mailContent)
+        {
+            var email = new MimeMessage();
+            email.Sender = new MailboxAddress(_mailSetting.DisplayName, _mailSetting.Mail);
+            email.From.Add(new MailboxAddress(_mailSetting.DisplayName, _mailSetting.Mail));
+            email.To.Add(new MailboxAddress(mailContent.To, mailContent.To));
+            email.Subject = mailContent.Subject;
+            var builder = new BodyBuilder();
+            builder.HtmlBody = mailContent.Body;
+            email.Body = builder.ToMessageBody();
+
+            using var smtpClient = new MailKit.Net.Smtp.SmtpClient();
+            try
+            {
+                smtpClient.Connect(_mailSetting.Host, _mailSetting.Port, SecureSocketOptions.StartTls);
+                smtpClient.Authenticate(_mailSetting.Mail, _mailSetting.Password);
+                smtpClient.Send(email);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            smtpClient.Disconnect(true);
         }
 
 

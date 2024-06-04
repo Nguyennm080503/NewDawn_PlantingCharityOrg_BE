@@ -71,7 +71,7 @@ namespace Service.Implement
 
         public async Task<ResponseNewsDetail> GetNewsDetail(int newsID)
         {
-            return await _postingNewsRepository.GetNewsDetail(newsID);
+            return _mapper.Map<ResponseNewsDetail>( await _postingNewsRepository.GetNewsDetail(newsID));
         }
 
         public async Task DeleteNews(int id)

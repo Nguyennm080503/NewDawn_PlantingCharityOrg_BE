@@ -34,7 +34,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.RegisterController
             }
             var otpHashSHA256 = _mailService.HashOTP(otp);
 
-            await _mailService.SendMailAsync(new Service.Mail.MailContent
+            await _mailService.SendMailOTPAsync(new Service.Mail.MailContent
             {
                 To = email,
                 Subject = "Nuôi cây",
