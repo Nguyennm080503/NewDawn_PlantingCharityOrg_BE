@@ -22,7 +22,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.RegisterController
             _userInformationService = userInformationService;
         }
 
-        [HttpPost("/verify-email")]
+        [HttpPost("send-email-verification-code")]
         public async Task<IActionResult> VerifyEmail(string email)
         {
             Random random = new Random();
