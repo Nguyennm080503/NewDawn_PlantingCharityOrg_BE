@@ -51,6 +51,11 @@ namespace Service.Implement
             return users;
         }
 
+        public async Task<UserInformation> GetUserByAccount(int accountID)
+        {
+            return await _userInformationRepository.GetAccountById(accountID);
+        }
+
         public async Task UpdateStatusMemberAccount(StatusParams statusParams)
         {
             var user = _userInformationRepository.GetAccountById(statusParams.AccountID);
