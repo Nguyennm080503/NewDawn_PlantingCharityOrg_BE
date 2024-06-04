@@ -7,6 +7,7 @@ using Service.Interface;
 using static System.Net.Mime.MediaTypeNames;
 using System.Text;
 using Org.BouncyCastle.Crypto;
+using Microsoft.AspNetCore.Hosting;
 
 namespace EXE201_NEWDAWN_BE.Controllers.RegisterController
 {
@@ -14,10 +15,12 @@ namespace EXE201_NEWDAWN_BE.Controllers.RegisterController
     [ApiController]
     public class RegisterController : ControllerBase
     {
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IMailService _mailService;
         private readonly IUserInformationService _userInformationService;
-        public RegisterController(IUserInformationService userInformationService, IMailService mailService)
+        public RegisterController(IWebHostEnvironment webHostEnvironment, IUserInformationService userInformationService, IMailService mailService)
         {
+            _webHostEnvironment = webHostEnvironment;
             _mailService = mailService;
             _userInformationService = userInformationService;
         }
@@ -34,7 +37,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.RegisterController
             }
             var otpHashSHA256 = _mailService.HashOTP(otp);
 
-            await _mailService.SendMailOTPAsync(new Service.Mail.MailContent
+            await _mailService.SendMailOTPAsync(_webHostEnvironment, new Service.Mail.MailContent
             {
                 To = email,
                 Subject = "Nuôi cây",

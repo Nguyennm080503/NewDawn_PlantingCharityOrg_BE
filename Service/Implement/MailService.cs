@@ -1,4 +1,5 @@
 ﻿using MailKit.Security;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using Service.Interface;
@@ -16,9 +17,10 @@ namespace Service.Implement
             _mailSetting = options.Value;
         }
 
-        public async Task SendMailOTPAsync(MailContent mailContent, string otp)
+        public async Task SendMailOTPAsync(IWebHostEnvironment webHostEnvironment, MailContent mailContent, string otp)
         {
-            var emailTemplatePath = Path.Combine(Directory.GetCurrentDirectory(), "Template", "OTPEmailTemplate.cs");
+
+            var emailTemplatePath = Path.Combine(webHostEnvironment.ContentRootPath, "Template", "OTPEmailTemplate.cs");
             var emailBody = await File.ReadAllTextAsync(emailTemplatePath);
             emailBody = emailBody.Replace("@Insert.OTP", otp);
 
