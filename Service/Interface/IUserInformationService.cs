@@ -1,6 +1,8 @@
 ﻿using BussinessObjects.Models;
 using DTOS.Account;
 using DTOS.Login;
+using DTOS.RegisterUser;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace Service.Interface
 {
@@ -12,5 +14,7 @@ namespace Service.Interface
         Task<UserInformation> GetUserByAccount(int accountID);
         Task<ProfileView> GetProfile(int accountID);
         Task UpdateProfile(ProfileUpade profileUpade);
+        Task<bool> RegisterAccount(RequestRegisterUser userRegister);
+        Task<UserDto> GetUserAccountByUserName(string username);
     }
 }

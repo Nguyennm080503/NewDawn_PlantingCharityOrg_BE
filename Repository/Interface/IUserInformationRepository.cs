@@ -10,5 +10,6 @@ namespace Repository.Interface
         Task<UserInformation> GetAccountById(int id);
         Task UpdateStatusMemberAccount(UserInformation userInformation);
         Task UpdateProfile(ProfileUpade profileUpade);
+        Task<bool> RegisterAccount(UserInformation newUserAccount);
     }
 }

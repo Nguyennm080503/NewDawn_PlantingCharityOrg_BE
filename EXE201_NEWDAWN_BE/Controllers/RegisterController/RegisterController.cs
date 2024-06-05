@@ -8,6 +8,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Text;
 using Org.BouncyCastle.Crypto;
 using Microsoft.AspNetCore.Hosting;
+using DTOS.RegisterUser;
 
 namespace EXE201_NEWDAWN_BE.Controllers.RegisterController
 {
@@ -46,8 +47,17 @@ namespace EXE201_NEWDAWN_BE.Controllers.RegisterController
             return Ok(otpHashSHA256);
         }
 
-        //[HttpPost()]
-        //public async Task<IActionResult> Register()
+        [HttpPost()]
+        public async Task<IActionResult> register(RequestRegisterUser userRegister)
+        {
+            var existedUserAccount = await _userInformationService.GetUserAccountByUserName(userRegister.Username);
+            if (existedUserAccount != null) 
+            {
+                return BadRequest("Username is existed");
+            }
+            var result = await _userInformationService.RegisterAccount(userRegister);
+            return Ok(result);
+        }
 
 
     }
