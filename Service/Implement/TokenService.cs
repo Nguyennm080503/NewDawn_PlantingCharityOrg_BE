@@ -1,4 +1,5 @@
 ﻿using BussinessObjects.Models;
+using DTOS;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Service.Interface;
@@ -26,6 +27,28 @@ namespace Service.Implement
             new Claim(JwtRegisteredClaimNames.NameId, user.AccountID.ToString()),
             new Claim("RoleId", user.RoleID.ToString()),
             new Claim("AccountId", user.AccountID.ToString())
+        };
+
+            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+            var tokenDiscriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claim),
+                Expires = DateTime.Now.AddHours(5),
+                SigningCredentials = creds
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var token = tokenHandler.CreateToken(tokenDiscriptor);
+
+            return tokenHandler.WriteToken(token);
+        }
+
+        public string CreateTokenOTP(TokenOTP tokenOTP)
+        {
+            var claim = new List<Claim>
+        {
+            new Claim("OTP", tokenOTP.OTP)
         };
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

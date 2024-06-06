@@ -9,6 +9,7 @@ using System.Text;
 using Org.BouncyCastle.Crypto;
 using Microsoft.AspNetCore.Hosting;
 using DTOS.RegisterUser;
+using DTOS;
 
 namespace EXE201_NEWDAWN_BE.Controllers.RegisterController
 {
@@ -19,11 +20,13 @@ namespace EXE201_NEWDAWN_BE.Controllers.RegisterController
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IMailService _mailService;
         private readonly IUserInformationService _userInformationService;
-        public RegisterController(IWebHostEnvironment webHostEnvironment, IUserInformationService userInformationService, IMailService mailService)
+        private readonly ITokenService _tokenService;
+        public RegisterController(IWebHostEnvironment webHostEnvironment, IUserInformationService userInformationService, IMailService mailService, ITokenService tokenService)
         {
             _webHostEnvironment = webHostEnvironment;
             _mailService = mailService;
             _userInformationService = userInformationService;
+            _tokenService = tokenService;
         }
 
         [HttpPost("send-email-verification-code")]
@@ -36,7 +39,9 @@ namespace EXE201_NEWDAWN_BE.Controllers.RegisterController
             {
                 otp += random.Next(0, 10); // Số ngẫu nhiên từ 0 đến 9
             }
-            var otpHashSHA256 = _mailService.HashOTP(otp);
+            var tokenOTP = new TokenOTP();
+            tokenOTP.OTP = otp;
+            var otptoken = _tokenService.CreateTokenOTP(tokenOTP);
 
             await _mailService.SendMailOTPAsync(_webHostEnvironment, new Service.Mail.MailContent
             {
@@ -44,7 +49,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.RegisterController
                 Subject = "Nuôi cây",
                 Body = ""
             }, otp);
-            return Ok(otpHashSHA256);
+            return Ok(otptoken);
         }
 
         [HttpPost()]
