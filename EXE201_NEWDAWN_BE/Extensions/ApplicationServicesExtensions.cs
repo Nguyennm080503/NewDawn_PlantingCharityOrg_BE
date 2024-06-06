@@ -40,7 +40,7 @@ namespace EXE201_NEWDAWN_BE.Extensions
             {
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.WithOrigins("http://localhost:5173")
+                    policy.WithOrigins("http://localhost:5173", "https://www.nuoicay.tech")
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials();
