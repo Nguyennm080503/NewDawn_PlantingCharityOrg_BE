@@ -41,15 +41,15 @@ namespace Repository.Implement
         public async Task<IEnumerable<NewsMonthView>> GetAllNewsEachMonth()
         {
             var news = PostingNewsDAO.Instance.GetAllAsync().Result
-                .Where(y => y.Type == 1).Take(4).ToList();
+                .Where(y => y.Type == 1).OrderByDescending(x => x.DateCreate).Take(4).ToList();
 
             return mapper.Map<IEnumerable<NewsMonthView>>(news);
 
         }
 
-        public async Task<IEnumerable<NewsType>> GetAllPostingNews ()
+        public async Task<IEnumerable<NewsType>> GetAllPostingNews()
         {
-            var responseNews = PostingNewsDAO.Instance.GetAllAsync().Result.Where(x => x.Status == 0);
+            var responseNews = PostingNewsDAO.Instance.GetAllAsync().Result.Where(x => x.Status == 0).OrderByDescending(x => x.DateCreate);
             return mapper.Map<IEnumerable<NewsType>>(responseNews);
         }
 
