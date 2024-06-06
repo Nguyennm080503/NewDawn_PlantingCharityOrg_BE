@@ -45,7 +45,7 @@ namespace DAO
         public async Task<double> GetTotalProfitEachMonth(int month, int year)
         {
             var payment =  await dataContext.PaymentTransaction.ToListAsync();
-            return payment.Where(x => x.DateCreate.Month == month && x.DateCreate.Year == year).Count();
+            return payment.Where(x => x.DateCreate.Month == month && x.DateCreate.Year == year).Sum(x => x.TotalAmout);
         }
     }
 }
