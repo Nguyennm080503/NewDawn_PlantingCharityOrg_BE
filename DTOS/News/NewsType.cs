@@ -8,5 +8,6 @@
         public string Thumbnail { get; set; }
         public string NewsDescription { get; set; }
         public DateTime DateCreate { get; set; }
+        public int Type { get; set; }
     }
 }
