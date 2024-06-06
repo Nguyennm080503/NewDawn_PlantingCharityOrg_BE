@@ -50,6 +50,7 @@ namespace Repository.Implement
             {
                 TransactionID = x.TransactionID,
                 Username = x.UserInformation.Username,
+                Email = x.UserInformation.Email,
                 Quantity = PaymentTransactionDetailDAO.Instance.GetQuantityTransaction(x.TransactionID),
                 DateCreate = x.DateCreate
             }).ToList();

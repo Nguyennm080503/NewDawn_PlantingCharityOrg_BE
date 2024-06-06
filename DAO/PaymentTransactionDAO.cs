@@ -31,7 +31,7 @@ namespace DAO
 
         public async Task<IEnumerable<PaymentTransaction>> Get4PaymentTransaction()
         {
-            return await dataContext.PaymentTransaction.Include(x => x.UserInformation).OrderByDescending(x => x.DateCreate).Take(6).ToListAsync();
+            return await dataContext.PaymentTransaction.Include(x => x.UserInformation).OrderByDescending(x => x.DateCreate).Take(4).ToListAsync();
         }
         public async Task<IEnumerable<PaymentTransaction>> GetAllPayments()
         {
