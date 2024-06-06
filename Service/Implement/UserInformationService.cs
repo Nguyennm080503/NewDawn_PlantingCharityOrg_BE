@@ -2,6 +2,9 @@
 using BussinessObjects.Models;
 using DTOS.Account;
 using DTOS.Login;
+using DTOS.RegisterUser;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Repository.Interface;
 using Service.Interface;
 using System.Security.Cryptography;
@@ -19,6 +22,12 @@ namespace Service.Implement
             _mapper = mapper;
             _tokenService = tokenService;
             _userInformationRepository = userInformationRepository;
+        }
+
+        public async Task<UserDto> GetUserAccountByUserName(string username)
+        {
+            var result = await _userInformationRepository.GetAccountLoginByUsername(username);
+            return _mapper.Map<UserDto>(result);
         }
 
         public async Task<UserDto> GetAccountLoginByUsername(LoginDto loginDto)
@@ -60,6 +69,36 @@ namespace Service.Implement
         public async Task<UserInformation> GetUserByAccount(int accountID)
         {
             return await _userInformationRepository.GetAccountById(accountID);
+        }
+
+        public async Task<bool> RegisterAccount(RequestRegisterUser userRegister)
+        {
+            var newUserAccount = new UserInformation
+            {
+                Email = userRegister.Email,
+                FullName = userRegister.FullName,
+                RoleID = 2,
+                Status = 0,
+                PhoneNumber = userRegister.PhoneNumber,
+                Username = userRegister.Username
+            };
+            Random random = new Random();
+            string passwordSalt = "";
+
+            for (int i = 0; i < 6; i++)
+            {
+                passwordSalt += random.Next(0, 10); // Số ngẫu nhiên từ 0 đến 9
+            }
+
+            Byte[] passwordSaltByte = Encoding.UTF8.GetBytes(passwordSalt);
+
+            using var hmac = new HMACSHA512(passwordSaltByte);
+            var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userRegister.Password));
+
+            newUserAccount.PasswordSalt = passwordSaltByte;
+            newUserAccount.PasswordHash = passwordHash;
+            var result = await _userInformationRepository.RegisterAccount(newUserAccount);
+            return result;
         }
 
         public async Task UpdateProfile(ProfileUpade profileUpade)

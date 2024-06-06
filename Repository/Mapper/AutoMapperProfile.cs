@@ -9,6 +9,7 @@ using DTOS.PaymentDetail;
 using DTOS.PlantCode;
 using DTOS.PlantTracking;
 using DTOS.PostingDetail;
+using DTOS.RegisterUser;
 
 namespace Repository.Mapper
 {
@@ -39,6 +40,7 @@ namespace Repository.Mapper
             CreateMap<PostingNews, CreateNewsModel>().ReverseMap();
             CreateMap<PostingNews, ResponseNewsDetail>().ReverseMap();
             CreateMap<ResponsePostingDetail, PostingDetail>().ReverseMap();
+            CreateMap<UserInformation, RequestRegisterUser>().ReverseMap();
         }
     }
 }

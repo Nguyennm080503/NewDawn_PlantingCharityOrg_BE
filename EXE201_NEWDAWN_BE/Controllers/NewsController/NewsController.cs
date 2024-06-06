@@ -29,7 +29,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.NewsController
 
         }
 
-        [Authorize(policy: "Admin")]
+
         [HttpGet("admin/news")]
         public async Task<IActionResult> GetAllNews()
         {
@@ -38,7 +38,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.NewsController
             return Ok(result);
         }
 
-        [Authorize(policy: "Admin")]
+
         [HttpGet("admin/news/detail/{newsID}")]
         public async Task<IActionResult> GetNewsDetail(int newsID)
         {
@@ -47,7 +47,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.NewsController
             return Ok(result);
         }
 
-        [Authorize(policy: "Admin")]
+
         [HttpPut("admin/news/delete/{newID}")]
         public async Task<IActionResult> DeleteNews(int newID)
         {

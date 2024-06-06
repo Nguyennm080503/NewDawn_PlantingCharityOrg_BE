@@ -16,6 +16,9 @@ namespace Repository.Implement
             var result = await PostingDetailDAO.Instance.CreateAsync(postingDetail);
             return result;
         }
+
+        
+
         public async Task<IEnumerable<PostingDetail>> GetAllPostingDetail()
         {
             var result = await PostingDetailDAO.Instance.GetAllAsync();

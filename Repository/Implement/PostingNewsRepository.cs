@@ -20,11 +20,16 @@ namespace Repository.Implement
             return result;
         }
 
-        public async Task DeleteNews(int id)
+        public async Task<bool> DeleteNewsById(int id)
         {
-            var news = PostingNewsDAO.Instance.GetAllAsync().Result.FirstOrDefault(x => x.NewsID == id);
-            news.Status = 1;
-            await PostingNewsDAO.Instance.UpdateAsync(news);
+            var newsEntity = await PostingNewsDAO.Instance.GetNewsById(id);
+            if (newsEntity != null)
+            {
+                newsEntity.Status = 1;
+                var result = await PostingNewsDAO.Instance.UpdateAsync(newsEntity);
+                return result;
+            }
+            return false;
         }
 
         public async Task<IEnumerable<NewsType>> GetAllNewsByType(int typeID)
@@ -48,10 +53,10 @@ namespace Repository.Implement
             return mapper.Map<IEnumerable<NewsType>>(responseNews);
         }
 
-        public async Task<ResponseNewsDetail> GetNewsDetail(int newsID)
+        public async Task<PostingNews> GetNewsDetailById(int id)
         {
-            var newsDetail = PostingNewsDAO.Instance.GetAllAsync().Result.FirstOrDefault(x => x.NewsID == newsID);
-            return mapper.Map<ResponseNewsDetail>(newsDetail);
+            var responseNews = await PostingNewsDAO.Instance.GetNewsById(id);
+            return responseNews;
         }
     }
 }

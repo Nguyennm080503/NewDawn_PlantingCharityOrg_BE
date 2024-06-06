@@ -9,7 +9,7 @@ namespace Repository.Interface
         Task<bool> CreateNews(PostingNews postingNews);
         Task<IEnumerable<NewsType>> GetAllPostingNews();
         Task<IEnumerable<NewsType>> GetAllNewsByType(int typeID);
-        Task<ResponseNewsDetail> GetNewsDetail(int newsID);
-        Task DeleteNews(int id);
+        Task<PostingNews> GetNewsDetailById(int id);
+        Task<bool> DeleteNewsById(int id);
     }
 }
