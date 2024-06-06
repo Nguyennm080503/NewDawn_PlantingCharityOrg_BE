@@ -62,7 +62,7 @@ namespace DAO
 
         public async Task<int> GetTotalPlantWasPlantedEachMonth(int month, int year)
         {
-            var plants = await dataContext.PlantCode.Where(x => x.Status != 1).ToListAsync();
+            var plants = await dataContext.PlantCode.ToListAsync();
             return plants.Where(x => x.DateCreate.Month == month && x.DateCreate.Year == year).Count();
         }
     }
