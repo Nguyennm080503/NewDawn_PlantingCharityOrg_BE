@@ -14,6 +14,7 @@ namespace EXE201_NEWDAWN_BE.Extensions
         {
             services.Configure<MailSetting>(config.GetSection("MailSetting"));
             services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IPayOSService, PayOSService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserInformationRepository, UserInformationRepository>();
             services.AddScoped<IPostingNewsRepository, PostingNewsRepository>();
