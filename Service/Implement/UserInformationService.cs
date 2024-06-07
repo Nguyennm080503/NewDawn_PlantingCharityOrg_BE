@@ -73,6 +73,7 @@ namespace Service.Implement
 
         public async Task<bool> RegisterAccount(RequestRegisterUser userRegister)
         {
+            using var hmac = new HMACSHA512();
             var newUserAccount = new UserInformation
             {
                 Email = userRegister.Email,
@@ -80,23 +81,10 @@ namespace Service.Implement
                 RoleID = 2,
                 Status = 0,
                 PhoneNumber = userRegister.PhoneNumber,
-                Username = userRegister.Username
+                Username = userRegister.Username,
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userRegister.Password)),
+                PasswordSalt = hmac.Key,
             };
-            Random random = new Random();
-            string passwordSalt = "";
-
-            for (int i = 0; i < 6; i++)
-            {
-                passwordSalt += random.Next(0, 10); // Số ngẫu nhiên từ 0 đến 9
-            }
-
-            Byte[] passwordSaltByte = Encoding.UTF8.GetBytes(passwordSalt);
-
-            using var hmac = new HMACSHA512(passwordSaltByte);
-            var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userRegister.Password));
-
-            newUserAccount.PasswordSalt = passwordSaltByte;
-            newUserAccount.PasswordHash = passwordHash;
             var result = await _userInformationRepository.RegisterAccount(newUserAccount);
             return result;
         }

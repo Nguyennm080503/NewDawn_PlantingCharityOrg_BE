@@ -2,6 +2,7 @@
 {
     public class PaymentCreate
     {
+        public string TransactionCode { get; set; }
         public string AccountBank { get; set; }
         public string BankCode { get; set; }
         public string BankName { get; set; }
