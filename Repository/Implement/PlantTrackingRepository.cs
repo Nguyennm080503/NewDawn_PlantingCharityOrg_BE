@@ -49,15 +49,15 @@ namespace Repository.Implement
                 PlantCodeID = trackingCreate.PlantCodeID,
                 ContentText = trackingCreate.ContentText,
                 DateCreate = DateTime.Now,
-                Status = trackingCreate.Status,
+                Status = trackingCreate.TrackingStatus,
             };
             try
             {
                 await PlantTrackingDAO.Instance.CreateAsync(plantTracking);
                 var trackingId = plantTracking.TrackingID;
                 var plantCode = PlantCodeDAO.Instance.GetAllAsync().Result.FirstOrDefault(x => x.PlantCodeID == trackingCreate.PlantCodeID);
-                plantCode.Status = trackingCreate.Status;
-                await PlantCodeDAO.Instance.UpdateAsync(plantCode);
+                plantCode.Status = trackingCreate.TotalStatus;
+                await PlantCodeDAO.Instance.UpdateAsync(plantCode);S
                 if (trackingId != 0)
                 {
                     foreach (var item in listTracking)
