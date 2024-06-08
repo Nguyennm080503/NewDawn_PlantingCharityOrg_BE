@@ -9,7 +9,7 @@ namespace Service.Implement
 {
     public class PayOSService : IPayOSService
     {
-        public async Task<string> CreatePaymentLink(int quantitys)
+        public async Task<string> CreatePaymentLink(int quantitys, string urlCancel, string urlReturn)
         {
             IConfigurationRoot config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -42,7 +42,7 @@ namespace Service.Implement
             } while (paymentLinkInformation != null);
 
             PaymentData paymentData = new PaymentData(int.Parse(orderID), quantitys * 150000, "Thanh toan don hang",
-            items, "http://localhost:5084", "http://localhost:5084");
+            items, urlCancel, urlReturn);
 
             CreatePaymentResult createPayment = await payOS.createPaymentLink(paymentData);
             return createPayment.checkoutUrl;
