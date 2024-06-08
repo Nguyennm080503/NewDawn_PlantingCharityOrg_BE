@@ -6,6 +6,6 @@ namespace Service.Interface
 {
     public interface IPayOSService
     {
-        Task<string> CreatePaymentLink(int quantity);
+        Task<string> CreatePaymentLink(int quantity, string urlCanecl, string urlReturn);
     }
 }

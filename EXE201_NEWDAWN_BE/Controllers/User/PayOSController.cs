@@ -15,10 +15,10 @@ namespace EXE201_NEWDAWN_BE.Controllers.User
         }
 
         [Authorize(policy: "Member")]
-        [HttpGet("payos/{quantity}")]
-        public async Task<IActionResult> GetLinkPayment(int quantity)
+        [HttpGet("payos-generation-link-code}")]
+        public async Task<IActionResult> GetLinkPayment(int quantity, string urlCancel, string urlReturn)
         {
-            var urlLink = await _payOSService.CreatePaymentLink(quantity);
+            var urlLink = await _payOSService.CreatePaymentLink(quantity, urlCancel, urlReturn);
             return Ok(urlLink);
         }
     }
