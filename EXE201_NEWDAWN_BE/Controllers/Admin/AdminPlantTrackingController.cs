@@ -19,7 +19,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.Admin
         }
 
         [Authorize(policy: "Admin")]
-        [HttpGet("admin/planttracking/create")]
+        [HttpPost("admin/planttracking/create")]
         public async Task<ActionResult> CreatePlantTracking([FromForm] PlantTrackingCreate trackingCreate)
         {
             try
