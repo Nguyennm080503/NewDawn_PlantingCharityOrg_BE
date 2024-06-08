@@ -57,7 +57,7 @@ namespace Repository.Implement
                 var trackingId = plantTracking.TrackingID;
                 var plantCode = PlantCodeDAO.Instance.GetAllAsync().Result.FirstOrDefault(x => x.PlantCodeID == trackingCreate.PlantCodeID);
                 plantCode.Status = trackingCreate.TotalStatus;
-                await PlantCodeDAO.Instance.UpdateAsync(plantCode);S
+                await PlantCodeDAO.Instance.UpdateAsync(plantCode);
                 if (trackingId != 0)
                 {
                     foreach (var item in listTracking)
