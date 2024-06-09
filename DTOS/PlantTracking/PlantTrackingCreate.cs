@@ -1,5 +1,4 @@
-﻿using DTOS.ImageTracking;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace DTOS.PlantTracking
 {

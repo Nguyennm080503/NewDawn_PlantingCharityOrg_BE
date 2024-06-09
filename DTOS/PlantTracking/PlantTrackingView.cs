@@ -1,6 +1,4 @@
-﻿using DTOS.ImageTracking;
-
-namespace DTOS.PlantTracking
+﻿namespace DTOS.PlantTracking
 {
     public class PlantTrackingView
     {

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BussinessObjects.Models;
 using DTOS.Account;
-using DTOS.ImageTracking;
 using DTOS.Login;
 using DTOS.News;
 using DTOS.Payment;
