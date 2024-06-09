@@ -2,12 +2,8 @@
 {
     public class PaymentCreate
     {
-        public string TransactionCode { get; set; }
-        public string AccountBank { get; set; }
-        public string BankCode { get; set; }
-        public string BankName { get; set; }
+        public int OrderID { get; set; }
         public int AccountID { get; set; }
-        public string? PaymentText { get; set; }
-        public double TotalAmout { get; set; }
+        public int Quantity { get; set; }
     }
 }

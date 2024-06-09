@@ -15,13 +15,16 @@ namespace Repository.Implement
             this.mapper = mapper;
         }
 
-        public async Task<int> CreatePaymentTransaction(PaymentCreate paymentTransaction)
+        public async Task<int> CreatePaymentTransaction(PaymentTransaction paymentTransaction)
         {
-            var payment = mapper.Map<PaymentTransaction>(paymentTransaction);
-            payment.Status = 0;
-            payment.DateCreate = DateTime.Now;
-            await PaymentTransactionDAO.Instance.CreateAsync(payment);
-            return payment.TransactionID;
+            await PaymentTransactionDAO.Instance.CreateAsync(paymentTransaction);
+            return paymentTransaction.TransactionID;
+        }
+
+        public async Task<IEnumerable<PaymentViewMember>> GetAllTransactionOfMember(int accountID)
+        {
+            var payments = PaymentTransactionDAO.Instance.GetAllPayments().Result.Where(x => x.AccountID == accountID);
+            return mapper.Map<IEnumerable<PaymentViewMember>>(payments);
         }
 
         public async Task<IEnumerable<PaymentAdminView>> GetAllTransactions()

@@ -48,7 +48,7 @@ namespace Service.Implement
                 }
 
 
-                UserDto userDto = _mapper.Map<UserDto>(user);
+                UserDto userDto = new UserDto();
                 userDto.Token = _tokenService.CreateToken(user);
                 return userDto;
             }

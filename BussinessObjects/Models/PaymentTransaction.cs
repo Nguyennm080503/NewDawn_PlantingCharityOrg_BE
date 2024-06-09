@@ -5,6 +5,7 @@
         public int TransactionID { get; set; }
         public string? TransactionCode { get; set; }
         public string AccountBank { get; set; }
+        public string? AccountName { get; set; }
         public string BankCode { get; set; }
         public string BankName { get; set;}
         public int AccountID { get; set; }

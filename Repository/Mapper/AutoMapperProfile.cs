@@ -18,6 +18,7 @@ namespace Repository.Mapper
         public AutoMapperProfile() 
         {
             CreateMap<UserInformation, UserDto>().ReverseMap();
+            CreateMap<PaymentTransaction, PaymentViewMember>().ReverseMap();
             CreateMap<UserInformation, ProfileView>().ReverseMap();
             CreateMap<UserInformation, UserInformationView>().ReverseMap();
             CreateMap<PostingNews, NewsMonthView>().ReverseMap();

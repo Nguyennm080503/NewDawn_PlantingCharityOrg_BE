@@ -7,5 +7,6 @@ namespace Service.Interface
     public interface IPayOSService
     {
         Task<string> CreatePaymentLink(int quantity, string urlCanecl, string urlReturn);
+        Task<TransactionReturn> HandleCodeAfterPaymentQR(int code);
     }
 }

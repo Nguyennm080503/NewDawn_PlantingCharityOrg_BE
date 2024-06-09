@@ -1,4 +1,5 @@
-﻿using DTOS.Payment;
+﻿using BussinessObjects.Models;
+using DTOS.Payment;
 using Repository.Interface;
 using Service.Interface;
 
@@ -12,9 +13,14 @@ namespace Service.Implement
             _paymentTransactionRepository = paymentTransactionRepository;
         }
 
-        public async Task<int> CreatePaymentTransaction(PaymentCreate paymentTransaction)
+        public async Task<int> CreatePaymentTransaction(PaymentTransaction paymentTransaction)
         {
             return await _paymentTransactionRepository.CreatePaymentTransaction(paymentTransaction);
+        }
+
+        public async Task<IEnumerable<PaymentViewMember>> GetAllTransactionOfMember(int accountID)
+        {
+            return await _paymentTransactionRepository.GetAllTransactionOfMember(accountID);
         }
 
         public async Task<IEnumerable<PaymentAdminView>> GetAllTransactions()

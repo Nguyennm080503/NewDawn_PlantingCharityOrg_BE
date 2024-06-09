@@ -7,7 +7,7 @@ namespace Service.Mail
         public static MailContent SendMailGenerationPlantCode(string toEmail, List<string> plantCodes)
         {
             var mailContext = new MailContent();
-            mailContext.To = "nguyencanqn123@gmail.com";
+            mailContext.To = toEmail;
             mailContext.Subject = "HỆ THỐNG XIN GỬI MÃ CODE CÂY SAU KHI THANH TOÁN";
             var bodyBuilder = new StringBuilder();
             bodyBuilder.AppendLine("<!DOCTYPE html>");

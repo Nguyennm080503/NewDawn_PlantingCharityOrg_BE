@@ -1,9 +1,11 @@
-﻿using DTOS.Payment;
+﻿using BussinessObjects.Models;
+using DTOS.Payment;
 using DTOS.PaymentDetail;
 using DTOS.PlantCode;
 using HostelManagementWebAPI.MessageStatusResponse;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Implement;
 using Service.Interface;
 using Service.Mail;
 
@@ -18,8 +20,8 @@ namespace EXE201_NEWDAWN_BE.Controllers.User
         private readonly IPlantTrackingService _plantTrackingService;
         private readonly IMailService _mailService;
         private readonly IUserInformationService _userInformationService;
-
-        public PaymentController(IPaymentTransactionDetailService transactionDetailService, IPaymentTransactionService transactionService, IPlantCodeService plantCodeService, IPlantTrackingService plantTrackingService, IMailService mailService, IUserInformationService userInformationService)
+        private readonly IPayOSService _portalService;
+        public PaymentController(IPaymentTransactionDetailService transactionDetailService, IPaymentTransactionService transactionService, IPlantCodeService plantCodeService, IPlantTrackingService plantTrackingService, IMailService mailService, IUserInformationService userInformationService, IPayOSService portalService)
         {
             _transactionDetailService = transactionDetailService;
             _transactionService = transactionService;
@@ -27,41 +29,46 @@ namespace EXE201_NEWDAWN_BE.Controllers.User
             _plantTrackingService = plantTrackingService;
             _mailService = mailService;
             _userInformationService = userInformationService;
+            _portalService = portalService;
         }
 
         [Authorize(policy: "Member")]
         [HttpPost("user/payment")]
-        public async Task<ActionResult> PaymentTransactionProccess(ParamTransaction paramTransaction)
+        public async Task<ActionResult> PaymentTransactionProccess(PaymentCreate paymentCreate)
         {
-            PaymentCreate paymentCreate = new PaymentCreate();
+            var transaction = await _portalService.HandleCodeAfterPaymentQR(paymentCreate.OrderID);
+            PaymentTransaction payment = new PaymentTransaction();
             var listCode = new List<string>();
-            paymentCreate.AccountBank = paramTransaction.AccountBank;
-            paymentCreate.BankName = paramTransaction.BankName;
-            paymentCreate.BankCode = paramTransaction.BankCode;
-            paymentCreate.PaymentText = paramTransaction.PaymentText;
-            paymentCreate.AccountID = paramTransaction.AccountID;
-            paymentCreate.TotalAmout = paramTransaction.TotalAmout;
-
-            var user = await _userInformationService.GetUserByAccount(paramTransaction.AccountID);
+            payment.AccountBank = transaction.AccountNumber;
+            payment.BankName = transaction.BankName;
+            payment.BankCode = transaction.BankCode;
+            payment.PaymentText = transaction.Description;
+            payment.AccountID = paymentCreate.AccountID;
+            payment.TotalAmout = transaction.Amount;
+            payment.AccountName = transaction.AccountName;
+            payment.DateCreate = transaction.TransactionDate;
+            payment.TransactionCode = transaction.Reference;
+            payment.Status = 0;
+            var user = await _userInformationService.GetUserByAccount(paymentCreate.AccountID);
             try
             {
-                int paymentID = await _transactionService.CreatePaymentTransaction(paymentCreate);
+                int paymentID = await _transactionService.CreatePaymentTransaction(payment);
                 if(paymentID != 0)
                 {
                     PaymentDetailCreate detailCreate = new PaymentDetailCreate();
                     detailCreate.PaymentID = paymentID;
-                    detailCreate.Quantity = paramTransaction.Quantity;
-                    detailCreate.TotalQuantity = paramTransaction.TotalQuantity;
+                    detailCreate.Quantity = paymentCreate.Quantity;
+                    detailCreate.TotalQuantity = transaction.Amount;
 
                     int detailID = await _transactionDetailService.CreatePaymentTransactionDetail(detailCreate);
 
                     if(detailID != 0)
                     {
-                        for(int i = 0; i < paramTransaction.Quantity; i++)
+                        for(int i = 0; i < paymentCreate.Quantity; i++)
                         {
                             PlantCodeCreate codeCreate = new PlantCodeCreate();
                             codeCreate.PaymentTransactionDetailID = detailID;
-                            codeCreate.OwnerID = paramTransaction.AccountID;
+                            codeCreate.OwnerID = paymentCreate.AccountID;
                             string plantcode = await _plantCodeService.CreatePlantCodeFromOrder(codeCreate);
                             if (plantcode != null)
                             {
@@ -89,6 +96,21 @@ namespace EXE201_NEWDAWN_BE.Controllers.User
             }catch (Exception ex)
             {
                 return BadRequest(new ApiResponseStatus(400, "Have some error when excute transaction."));
+            }
+        }
+
+        [Authorize(policy: "Member")]
+        [HttpGet("user/payment/all/{accountID}")]
+        public async Task<IActionResult> GetAllTransactionOfMember(int accountID)
+        {
+            var transactions = await _transactionService.GetAllTransactionOfMember(accountID);
+            if (transactions != null)
+            {
+                return Ok(transactions);
+            }
+            else
+            {
+                return BadRequest(new ApiResponseStatus(404, "No data"));
             }
         }
     }
