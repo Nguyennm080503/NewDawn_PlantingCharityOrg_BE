@@ -13,6 +13,6 @@ namespace DTOS.PlantTracking
         public int Status { get; set; }
         public int TotalStatus { get; set; }
 
-        public IEnumerable<ImageDetailView> PlantImageDetail { get; set; }
+        public IEnumerable<string> PlantImageDetail { get; set; }
     }
 }

@@ -20,12 +20,17 @@ namespace Repository.Implement
         public async Task<IEnumerable<PlantTrackingView>> GetAllTrackingDetailOfPlantCode(string plantcode)
         {
             var trackingViews = new List<PlantTrackingView>();
+            var listUrl = new List<string>();
             var trackings = await PlantTrackingDAO.Instance.GetAllTrackingOfPlantCode(plantcode);
             foreach (var tracking in trackings)
             {
                 var images = await ImageDetailDAO.Instance.GetImagesOfTrackingPlantCode(tracking.TrackingID);
+                foreach (var image in images)
+                {
+                    listUrl.Add(image.Url);
+                }
                 var trackingView = mapper.Map<PlantTrackingView>(tracking);
-                trackingView.PlantImageDetail = mapper.Map<IEnumerable<ImageDetailView>>(images);
+                trackingView.PlantImageDetail = listUrl;
 
                 trackingViews.Add(trackingView);
             }
