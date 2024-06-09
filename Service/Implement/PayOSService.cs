@@ -86,8 +86,6 @@ namespace Service.Implement
         {
             var bankData = await File.ReadAllTextAsync("BankAccount.json");
 
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-
             var banks = JsonSerializer.Deserialize<List<BankAccount>>(bankData);
             return banks;
         }
