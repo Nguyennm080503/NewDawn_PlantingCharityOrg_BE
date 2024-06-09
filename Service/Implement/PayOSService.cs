@@ -29,23 +29,27 @@ namespace Service.Implement
             Random rand = new Random();
             string orderID = "";
             PaymentLinkInformation paymentLinkInformation = null;
-
-            do
+            try
             {
-                orderID = "";
-                for (int i = 0; i < 6; i++)
+                do
                 {
-                    orderID += rand.Next(0, 10);
-                }
+                    orderID = "";
+                    for (int i = 0; i < 6; i++)
+                    {
+                        orderID += rand.Next(0, 10);
+                    }
 
-                paymentLinkInformation = await payOS.getPaymentLinkInformation(int.Parse(orderID));
-            } while (paymentLinkInformation != null);
-
-            PaymentData paymentData = new PaymentData(int.Parse(orderID), quantitys * 150000, "Thanh toan don hang",
+                    paymentLinkInformation = await payOS.getPaymentLinkInformation(int.Parse(orderID));
+                } while (paymentLinkInformation != null);
+                return "";
+            }
+            catch (Exception ex) {
+                PaymentData paymentData = new PaymentData(int.Parse(orderID), quantitys * 150000, "Thanh toan don hang",
             items, urlCancel, urlReturn);
 
-            CreatePaymentResult createPayment = await payOS.createPaymentLink(paymentData);
-            return createPayment.checkoutUrl;
+                CreatePaymentResult createPayment = await payOS.createPaymentLink(paymentData);
+                return createPayment.checkoutUrl;
+            }
         }
     }
 }
