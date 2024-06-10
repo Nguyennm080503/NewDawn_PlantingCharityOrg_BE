@@ -70,7 +70,7 @@ namespace Service.Implement
                 var checkSumKey = config["PayOS:CheckSumKey"];
 
                 PayOS payOS = new PayOS(client, apiKey, checkSumKey);
-                PaymentLinkInformation paymentLinkInformation = await payOS.getPaymentLinkInformation(code);
+                PaymentLinkInformation paymentLinkInformation = await getPaymentLinkInformation(code);
                 var inf = paymentLinkInformation.transactions.FirstOrDefault();
                 var bankAccounts = GetBankAccount();
                 var bank = bankAccounts.Result.FirstOrDefault(x => x.bin == inf.counterAccountBankId);
@@ -99,30 +99,6 @@ namespace Service.Implement
 
             var banks = System.Text.Json.JsonSerializer.Deserialize<List<BankAccount>>(bankData);
             return banks;
-        }
-
-        public async Task<Transaction> Test(int code)
-        {
-            try
-            {
-                IConfigurationRoot config = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetCurrentDirectory())
-               .AddJsonFile("appsettings.json", true, true)
-               .Build();
-
-                var client = config["PayOS:ClientID"];
-                var apiKey = config["PayOS:APIKey"];
-                var checkSumKey = config["PayOS:CheckSumKey"];
-
-                PayOS payOS = new PayOS(client, apiKey, checkSumKey);
-                PaymentLinkInformation paymentLinkInformation = await getPaymentLinkInformation(code);
-                return paymentLinkInformation.transactions.FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-
         }
 
         public async Task<PaymentLinkInformation> getPaymentLinkInformation(long orderId)
