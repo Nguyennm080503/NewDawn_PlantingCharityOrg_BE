@@ -115,7 +115,7 @@ namespace Service.Implement
                 var checkSumKey = config["PayOS:CheckSumKey"];
 
                 PayOS payOS = new PayOS(client, apiKey, checkSumKey);
-                PaymentLinkInformation paymentLinkInformation = await payOS.getPaymentLinkInformation(code);
+                PaymentLinkInformation paymentLinkInformation = await getPaymentLinkInformation(code);
                 return paymentLinkInformation.transactions.FirstOrDefault();
             }
             catch (Exception ex)
@@ -125,7 +125,7 @@ namespace Service.Implement
 
         }
 
-        public async Task<string> paymentLinkResSignature(long orderId)
+        public async Task<PaymentLinkInformation> getPaymentLinkInformation(long orderId)
         {
             IConfigurationRoot config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetCurrentDirectory())
@@ -147,46 +147,27 @@ namespace Service.Implement
             }
             })).Content.ReadAsStringAsync());
             string code = responseBodyJson["code"]?.ToString();
-            string data = responseBodyJson["data"]?.ToString();
-            if (code == null)
-            {
-                throw new PayOSError("20", "Internal Server Error.");
-            }
-                JObject dataJson = JObject.Parse(data);
-                string paymentLinkResSignature = SignatureControl.CreateSignatureFromObj(dataJson, checkSumKey);
-
-                return paymentLinkResSignature;
-        }
-
-        public async Task<string> getPaymentLinkInformation(long orderId)
-        {
-            IConfigurationRoot config = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetCurrentDirectory())
-               .AddJsonFile("appsettings.json", true, true)
-               .Build();
-
-            var client = config["PayOS:ClientID"];
-            var apiKey = config["PayOS:APIKey"];
-            var checkSumKey = config["PayOS:CheckSumKey"];
-
-            string url = "https://api-merchant.payos.vn/v2/payment-requests/" + orderId;
-            HttpClient httpClient = new HttpClient();
-            JObject responseBodyJson = JObject.Parse(await (await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, url)
-            {
-                Headers =
-            {
-                { "x-client-id", client },
-                { "x-api-key", apiKey }
-            }
-            })).Content.ReadAsStringAsync());
-            string code = responseBodyJson["code"]?.ToString();
+            string desc = responseBodyJson["desc"]?.ToString();
             string data = responseBodyJson["data"]?.ToString();
             if (code == null)
             {
                 throw new PayOSError("20", "Internal Server Error.");
             }
 
-            return responseBodyJson["signature"].ToString();
+            if (code == "00" && data != null)
+            {
+                PaymentLinkInformation response = JsonConvert.DeserializeObject<PaymentLinkInformation>(data);
+                if (response == null)
+                {
+                    throw new InvalidOperationException("Error deserializing JSON response: Deserialized object is null.");
+                }
+
+                return response;
+            }
+
+            throw new PayOSError(code, desc);
         }
+
+
     }
 }
