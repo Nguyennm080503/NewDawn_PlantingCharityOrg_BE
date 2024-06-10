@@ -2,8 +2,6 @@
 using DTOS.Account;
 using DTOS.Login;
 using DTOS.RegisterUser;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-
 namespace Service.Interface
 {
     public interface IUserInformationService
@@ -16,5 +14,7 @@ namespace Service.Interface
         Task UpdateProfile(ProfileUpade profileUpade);
         Task<bool> RegisterAccount(RequestRegisterUser userRegister);
         Task<UserDto> GetUserAccountByUserName(string username);
+        Task CreateAccount(AccountCreate account);
+        Task<UserDto> GetAccountLoginByAdminPermission(LoginDto loginDto);
     }
 }

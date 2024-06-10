@@ -21,7 +21,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.User
         [HttpGet("user/profile/{accountID}")]
         public async Task<ActionResult> GetProfile(int accountID) 
         {
-            var profile = _userInformationService.GetProfile(accountID);
+            var profile = await _userInformationService.GetProfile(accountID);
             return Ok(profile);
         }
 

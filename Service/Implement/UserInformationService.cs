@@ -3,8 +3,7 @@ using BussinessObjects.Models;
 using DTOS.Account;
 using DTOS.Login;
 using DTOS.RegisterUser;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Configuration;
 using Repository.Interface;
 using Service.Interface;
 using System.Security.Cryptography;
@@ -54,6 +53,35 @@ namespace Service.Implement
             }
         }
 
+        public async Task<UserDto> GetAccountLoginByAdminPermission(LoginDto loginDto)
+        {
+            IConfigurationRoot config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                       .AddJsonFile("appsettings.json", true, true)
+                       .Build();
+            string username = config["AdminPermission:Username"];
+            string pwd = config["AdminPermission:AccountPassword"];
+            if (loginDto.Username == username && loginDto.Password == pwd)
+            {
+                UserInformation user = new UserInformation()
+                {
+                    Username = username,
+                    RoleID = 1,
+                    AccountID = 0,
+                };
+                UserDto userDto = new UserDto();
+                userDto.Username = username;
+                userDto.RoleID = 1;
+                userDto.Status = 0;
+                userDto.Token = _tokenService.CreateToken(user);
+                return userDto;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public async Task<IEnumerable<UserInformationView>> GetListMemberUser()
         {
             var users = await _userInformationRepository.GetListMemberUser();
@@ -99,6 +127,23 @@ namespace Service.Implement
             var user = _userInformationRepository.GetAccountById(statusParams.AccountID);
             user.Result.Status = statusParams.Status;
             await _userInformationRepository.UpdateStatusMemberAccount(user.Result);
+        }
+
+        public async Task CreateAccount(AccountCreate account)
+        {
+            using var hmac = new HMACSHA512();
+            var newUserAccount = new UserInformation
+            {
+                Email = account.Email,
+                FullName = account.FullName,
+                RoleID = account.RoleID,
+                Status = 0,
+                PhoneNumber = account.PhoneNumber,
+                Username = account.Username,
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(account.Password)),
+                PasswordSalt = hmac.Key,
+            };
+            await _userInformationRepository.RegisterAccount(newUserAccount);
         }
     }
 }
