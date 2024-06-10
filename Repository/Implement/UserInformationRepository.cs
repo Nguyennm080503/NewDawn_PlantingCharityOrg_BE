@@ -3,6 +3,8 @@ using BussinessObjects.Models;
 using DAO;
 using DTOS.Account;
 using Repository.Interface;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Repository.Implement
 {
@@ -52,5 +54,17 @@ namespace Repository.Implement
         {
             await UserInformationDAO.Instance.UpdateAsync(userInformation);
         }
+
+
+        public async Task<bool> UpdatePasswordAccount(string username, string password)
+        {
+            var existedUser = await GetAccountLoginByUsername(username);
+            if (existedUser == null) return false;
+            using var hmac = new HMACSHA512();
+            existedUser.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            existedUser.PasswordSalt = hmac.Key;
+            return await UserInformationDAO.Instance.UpdateAsync(existedUser);
+        }
+
     }
 }

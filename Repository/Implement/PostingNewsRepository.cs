@@ -41,7 +41,7 @@ namespace Repository.Implement
         public async Task<IEnumerable<NewsMonthView>> GetAllNewsEachMonth()
         {
             var news = PostingNewsDAO.Instance.GetAllAsync().Result
-                .Where(y => y.Type == 1).OrderByDescending(x => x.DateCreate).Take(4).ToList();
+                .Where(y => y.Type == 1 && y.Status == 0).OrderByDescending(x => x.DateCreate).Take(4).ToList();
 
             return mapper.Map<IEnumerable<NewsMonthView>>(news);
 

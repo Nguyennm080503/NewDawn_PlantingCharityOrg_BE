@@ -16,5 +16,7 @@ namespace Service.Interface
         Task UpdateProfile(ProfileUpade profileUpade);
         Task<bool> RegisterAccount(RequestRegisterUser userRegister);
         Task<UserDto> GetUserAccountByUserName(string username);
+        Task<bool> ResetPassword(string username, string password);
+        Task<UserInformationView> GetUserByUserName(string username);
     }
 }
