@@ -1,7 +1,11 @@
 ﻿using DTOS;
 using Microsoft.Extensions.Configuration;
 using Net.payOS;
+using Net.payOS.Errors;
 using Net.payOS.Types;
+using Net.payOS.Utils;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using Service.Interface;
 using System.Text.Json;
 
@@ -93,7 +97,7 @@ namespace Service.Implement
         {
             var bankData = await File.ReadAllTextAsync("BankAccount.json");
 
-            var banks = JsonSerializer.Deserialize<List<BankAccount>>(bankData);
+            var banks = System.Text.Json.JsonSerializer.Deserialize<List<BankAccount>>(bankData);
             return banks;
         }
 
@@ -119,6 +123,70 @@ namespace Service.Implement
                 throw new Exception(ex.Message);
             }
 
+        }
+
+        public async Task<string> paymentLinkResSignature(long orderId)
+        {
+            IConfigurationRoot config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json", true, true)
+               .Build();
+
+            var client = config["PayOS:ClientID"];
+            var apiKey = config["PayOS:APIKey"];
+            var checkSumKey = config["PayOS:CheckSumKey"];
+
+            string url = "https://api-merchant.payos.vn/v2/payment-requests/" + orderId;
+            HttpClient httpClient = new HttpClient();
+            JObject responseBodyJson = JObject.Parse(await (await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, url)
+            {
+                Headers =
+            {
+                { "x-client-id", client },
+                { "x-api-key", apiKey }
+            }
+            })).Content.ReadAsStringAsync());
+            string code = responseBodyJson["code"]?.ToString();
+            string data = responseBodyJson["data"]?.ToString();
+            if (code == null)
+            {
+                throw new PayOSError("20", "Internal Server Error.");
+            }
+                JObject dataJson = JObject.Parse(data);
+                string paymentLinkResSignature = SignatureControl.CreateSignatureFromObj(dataJson, checkSumKey);
+
+                return paymentLinkResSignature;
+        }
+
+        public async Task<string> getPaymentLinkInformation(long orderId)
+        {
+            IConfigurationRoot config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json", true, true)
+               .Build();
+
+            var client = config["PayOS:ClientID"];
+            var apiKey = config["PayOS:APIKey"];
+            var checkSumKey = config["PayOS:CheckSumKey"];
+
+            string url = "https://api-merchant.payos.vn/v2/payment-requests/" + orderId;
+            HttpClient httpClient = new HttpClient();
+            JObject responseBodyJson = JObject.Parse(await (await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, url)
+            {
+                Headers =
+            {
+                { "x-client-id", client },
+                { "x-api-key", apiKey }
+            }
+            })).Content.ReadAsStringAsync());
+            string code = responseBodyJson["code"]?.ToString();
+            string data = responseBodyJson["data"]?.ToString();
+            if (code == null)
+            {
+                throw new PayOSError("20", "Internal Server Error.");
+            }
+
+            return responseBodyJson["signature"].ToString();
         }
     }
 }

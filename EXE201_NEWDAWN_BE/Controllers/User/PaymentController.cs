@@ -125,7 +125,21 @@ namespace EXE201_NEWDAWN_BE.Controllers.User
         [HttpGet("user/payment/test/{orderID}")]
         public async Task<IActionResult> Test(int orderID)
         {
-            var transactions = await _portalService.Test(orderID);
+            var transactions = await _portalService.getPaymentLinkInformation(orderID);
+            if (transactions != null)
+            {
+                return Ok(transactions);
+            }
+            else
+            {
+                return BadRequest(new ApiResponseStatus(404, "No data"));
+            }
+        }
+
+        [HttpGet("user/payment/test2/{orderID}")]
+        public async Task<IActionResult> Test2(int orderID)
+        {
+            var transactions = await _portalService.paymentLinkResSignature(orderID);
             if (transactions != null)
             {
                 return Ok(transactions);
