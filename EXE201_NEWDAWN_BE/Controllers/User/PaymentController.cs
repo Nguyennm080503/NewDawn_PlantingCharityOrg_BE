@@ -36,66 +36,74 @@ namespace EXE201_NEWDAWN_BE.Controllers.User
         [HttpPost("user/payment")]
         public async Task<ActionResult> PaymentTransactionProccess(PaymentCreate paymentCreate)
         {
-            var transaction = await _portalService.HandleCodeAfterPaymentQR(paymentCreate.OrderID);
-            PaymentTransaction payment = new PaymentTransaction();
-            var listCode = new List<string>();
-            payment.AccountBank = transaction.AccountNumber;
-            payment.BankName = transaction.BankName;
-            payment.BankCode = transaction.BankCode;
-            payment.PaymentText = transaction.Description;
-            payment.AccountID = paymentCreate.AccountID;
-            payment.TotalAmout = transaction.Amount;
-            payment.AccountName = transaction.AccountName;
-            payment.DateCreate = transaction.TransactionDate;
-            payment.TransactionCode = transaction.Reference;
-            payment.Status = 0;
-            var user = await _userInformationService.GetUserByAccount(paymentCreate.AccountID);
             try
             {
-                int paymentID = await _transactionService.CreatePaymentTransaction(payment);
-                if(paymentID != 0)
+                var transaction = await _portalService.HandleCodeAfterPaymentQR(paymentCreate.OrderID);
+                PaymentTransaction payment = new PaymentTransaction();
+                var listCode = new List<string>();
+                payment.AccountBank = transaction.AccountNumber;
+                payment.BankName = transaction.BankName;
+                payment.BankCode = transaction.BankCode;
+                payment.PaymentText = transaction.Description;
+                payment.AccountID = paymentCreate.AccountID;
+                payment.TotalAmout = transaction.Amount;
+                payment.AccountName = transaction.AccountName;
+                payment.DateCreate = transaction.TransactionDate;
+                payment.TransactionCode = transaction.Reference;
+                payment.Status = 0;
+                var user = await _userInformationService.GetUserByAccount(paymentCreate.AccountID);
+                try
                 {
-                    PaymentDetailCreate detailCreate = new PaymentDetailCreate();
-                    detailCreate.PaymentID = paymentID;
-                    detailCreate.Quantity = paymentCreate.Quantity;
-                    detailCreate.TotalQuantity = transaction.Amount;
-
-                    int detailID = await _transactionDetailService.CreatePaymentTransactionDetail(detailCreate);
-
-                    if(detailID != 0)
+                    int paymentID = await _transactionService.CreatePaymentTransaction(payment);
+                    if (paymentID != 0)
                     {
-                        for(int i = 0; i < paymentCreate.Quantity; i++)
-                        {
-                            PlantCodeCreate codeCreate = new PlantCodeCreate();
-                            codeCreate.PaymentTransactionDetailID = detailID;
-                            codeCreate.OwnerID = paymentCreate.AccountID;
-                            string plantcode = await _plantCodeService.CreatePlantCodeFromOrder(codeCreate);
-                            if (plantcode != null)
-                            {
-                                listCode.Add(plantcode);
-                                await _plantTrackingService.CreateFirstTrackingPlantCode(plantcode);
+                        PaymentDetailCreate detailCreate = new PaymentDetailCreate();
+                        detailCreate.PaymentID = paymentID;
+                        detailCreate.Quantity = paymentCreate.Quantity;
+                        detailCreate.TotalQuantity = transaction.Amount;
 
-                            }
-                            else
+                        int detailID = await _transactionDetailService.CreatePaymentTransactionDetail(detailCreate);
+
+                        if (detailID != 0)
+                        {
+                            for (int i = 0; i < paymentCreate.Quantity; i++)
                             {
-                                return BadRequest(new ApiResponseStatus(400, "Have some error when excute transaction."));
+                                PlantCodeCreate codeCreate = new PlantCodeCreate();
+                                codeCreate.PaymentTransactionDetailID = detailID;
+                                codeCreate.OwnerID = paymentCreate.AccountID;
+                                string plantcode = await _plantCodeService.CreatePlantCodeFromOrder(codeCreate);
+                                if (plantcode != null)
+                                {
+                                    listCode.Add(plantcode);
+                                    await _plantTrackingService.CreateFirstTrackingPlantCode(plantcode);
+
+                                }
+                                else
+                                {
+                                    return BadRequest(new ApiResponseStatus(400, "Have some error when excute transaction."));
+                                }
                             }
+                            _mailService.SendMail(SendMailGeneration.SendMailGenerationPlantCode(user.Email, listCode));
+                            return Ok();
                         }
-                        _mailService.SendMail(SendMailGeneration.SendMailGenerationPlantCode(user.Email, listCode));
-                        return Ok();
+                        else
+                        {
+                            return BadRequest(new ApiResponseStatus(400, "Have some error when excute transaction."));
+                        }
                     }
                     else
                     {
                         return BadRequest(new ApiResponseStatus(400, "Have some error when excute transaction."));
                     }
                 }
-                else
+                catch (Exception ex)
                 {
                     return BadRequest(new ApiResponseStatus(400, "Have some error when excute transaction."));
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                return BadRequest(new ApiResponseStatus(400, "Have some error when excute transaction."));
+                return BadRequest(ex.Message);
             }
         }
 
