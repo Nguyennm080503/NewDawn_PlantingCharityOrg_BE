@@ -11,5 +11,6 @@ namespace Repository.Interface
         Task UpdateStatusMemberAccount(UserInformation userInformation);
         Task UpdateProfile(ProfileUpade profileUpade);
         Task<bool> RegisterAccount(UserInformation newUserAccount);
+        Task<bool> UpdatePasswordAccount(string username, string password);
     }
 }

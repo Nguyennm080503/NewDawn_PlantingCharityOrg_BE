@@ -16,5 +16,7 @@ namespace Service.Interface
         Task<UserDto> GetUserAccountByUserName(string username);
         Task CreateAccount(AccountCreate account);
         Task<UserDto> GetAccountLoginByAdminPermission(LoginDto loginDto);
+        Task<bool> ResetPassword(string username, string password);
+        Task<UserInformationView> GetUserByUserName(string username);
     }
 }

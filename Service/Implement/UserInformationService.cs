@@ -16,7 +16,7 @@ namespace Service.Implement
         private readonly IUserInformationRepository _userInformationRepository;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
-        public UserInformationService(IUserInformationRepository userInformationRepository, ITokenService tokenService, IMapper mapper) 
+        public UserInformationService(IUserInformationRepository userInformationRepository, ITokenService tokenService, IMapper mapper)
         {
             _mapper = mapper;
             _tokenService = tokenService;
@@ -128,7 +128,6 @@ namespace Service.Implement
             user.Result.Status = statusParams.Status;
             await _userInformationRepository.UpdateStatusMemberAccount(user.Result);
         }
-
         public async Task CreateAccount(AccountCreate account)
         {
             using var hmac = new HMACSHA512();
@@ -144,6 +143,20 @@ namespace Service.Implement
                 PasswordSalt = hmac.Key,
             };
             await _userInformationRepository.RegisterAccount(newUserAccount);
+        }
+        public async Task<bool> ResetPassword(string username, string password)
+        {
+            var user = await GetUserByUserName(username);
+            if (user == null) return false;
+            var result = await _userInformationRepository.UpdatePasswordAccount(user.Username, password);
+            return result;
+        }
+
+        public async Task<UserInformationView> GetUserByUserName(string username)
+        {
+            var userAccount = _userInformationRepository.GetListMemberUser().Result.Where(x => x.Username.Equals(username)).FirstOrDefault();
+            if (userAccount == null) return null;
+            return userAccount;
         }
     }
 }
