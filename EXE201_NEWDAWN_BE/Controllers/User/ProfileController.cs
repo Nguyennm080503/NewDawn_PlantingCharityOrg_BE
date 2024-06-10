@@ -27,7 +27,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.User
 
         [Authorize(policy: "Member")]
         [HttpPost("user/profile/update")]
-        public async Task<ActionResult> UpdateProfile([FromForm] ProfileUpade profileUpade)
+        public async Task<ActionResult> UpdateProfile(ProfileUpade profileUpade)
         {
             try
             {
