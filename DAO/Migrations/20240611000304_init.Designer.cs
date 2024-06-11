@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAO.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240531054225_init")]
+    [Migration("20240611000304_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace DAO.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.5")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -188,6 +188,9 @@ namespace DAO.Migrations
                     b.Property<int>("AccountID")
                         .HasColumnType("int");
 
+                    b.Property<string>("AccountName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("BankCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -207,6 +210,9 @@ namespace DAO.Migrations
 
                     b.Property<double>("TotalAmout")
                         .HasColumnType("float");
+
+                    b.Property<string>("TransactionCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TransactionID");
 
@@ -244,6 +250,9 @@ namespace DAO.Migrations
                     b.Property<string>("PlantCodeID")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("OwnerID")
                         .HasColumnType("int");
 
@@ -257,6 +266,9 @@ namespace DAO.Migrations
                     b.Property<string>("ProviceAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("PlantCodeID");
 

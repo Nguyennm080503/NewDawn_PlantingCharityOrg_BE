@@ -77,7 +77,9 @@ namespace DAO.Migrations
                 {
                     TransactionID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    TransactionCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AccountBank = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccountName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BankCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BankName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AccountID = table.Column<int>(type: "int", nullable: false),
@@ -224,7 +226,9 @@ namespace DAO.Migrations
                     PaymentTransactionDetailID = table.Column<int>(type: "int", nullable: false),
                     OwnerID = table.Column<int>(type: "int", nullable: false),
                     Provice = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProviceAddress = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ProviceAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
