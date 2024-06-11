@@ -39,6 +39,11 @@ namespace EXE201_NEWDAWN_BE.Controllers.User
             try
             {
                 var transaction = await _portalService.HandleCodeAfterPaymentQR(paymentCreate.OrderID);
+                var transactionExisted =  _transactionService.GetAllTransactions().Result.FirstOrDefault(x => x.TransactionCode == transaction.Reference);
+                if(transactionExisted != null)
+                {
+                    return BadRequest(new ApiResponseStatus(404, "The transaction has been completed!"));
+                }
                 PaymentTransaction payment = new PaymentTransaction();
                 var listCode = new List<string>();
                 payment.AccountBank = transaction.AccountNumber;
