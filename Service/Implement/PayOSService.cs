@@ -26,7 +26,7 @@ namespace Service.Implement
 
             PayOS payOS = new PayOS(client, apiKey, checkSumKey);
 
-            ItemData item = new ItemData("Cây", quantity, quantity * 150000);
+            ItemData item = new ItemData("Cây", quantity, quantity * 2000);
             List<ItemData> items = new List<ItemData>();
             items.Add(item);
 
@@ -48,7 +48,7 @@ namespace Service.Implement
                 return "";
             }
             catch (Exception ex) {
-                PaymentData paymentData = new PaymentData(int.Parse(orderID), quantity * 150000, "Thanh toan don hang",
+                PaymentData paymentData = new PaymentData(int.Parse(orderID), quantity * 2000, "Thanh toan don hang",
             items, urlCancel, urlReturn);
 
                 CreatePaymentResult createPayment = await payOS.createPaymentLink(paymentData);
