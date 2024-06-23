@@ -53,7 +53,7 @@ namespace EXE201_NEWDAWN_BE.Controllers.User
                 payment.AccountID = paymentCreate.AccountID;
                 payment.TotalAmout = transaction.Amount;
                 payment.AccountName = transaction.AccountName;
-                payment.DateCreate = transaction.TransactionDate;
+                payment.DateCreate = transaction.TransactionDate.AddHours(7);
                 payment.TransactionCode = transaction.Reference;
                 payment.Status = 0;
                 var user = await _userInformationService.GetUserByAccount(paymentCreate.AccountID);
