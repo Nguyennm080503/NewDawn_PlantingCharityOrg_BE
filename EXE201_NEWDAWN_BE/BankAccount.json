@@ -14,20 +14,6 @@
     "swift_code": "ICBVVNVX"
   },
   {
-    "id": 65,
-    "name": "Ví Momo",
-    "code": "Momo",
-    "bin": "970488",
-    "shortName": "Momo",
-    "logo": "https://api.vietqr.io/img/ICB.png",
-    "transferSupported": 1,
-    "lookupSupported": 1,
-    "short_name": "Momo",
-    "support": 3,
-    "isTransfer": 1,
-    "swift_code": "ICBVVNVX"
-  },
-  {
     "id": 43,
     "name": "Ngân hàng TMCP Ngoại Thương Việt Nam",
     "code": "VCB",
